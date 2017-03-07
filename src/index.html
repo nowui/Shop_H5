@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+  <meta name="format-detection" content="telephone=no"/>
+  <meta name="format-detection" content="email=no"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>微信商城</title>
+  <link rel="stylesheet" href="index.css" />
+  <style>
+    #root {
+      margin: 0 auto;
+      min-width: 320px;
+      max-width: 640px;
+    }
+    .am-navbar {
+      /*border-bottom: 1PX solid #ddd;*/
+      height: 0.99rem;
+    }
+    .am-tab-bar-bar {
+      min-width: 320px;
+      max-width: 640px;
+    }
+    .home .am-list-extra {
+      flex-basis: 0% !important;
+    }
+    .course .am-list-extra {
+      color: #000000 !important;
+      flex-basis: 80% !important;
+    }
+    .content .am-list-extra {
+      flex-basis: 0% !important;
+    }
+
+    .swipe {
+        overflow: hidden;
+        visibility: hidden;
+        position: relative;
+    }
+    .swipe-wrap {
+        overflow: hidden;
+        position: relative;
+    }
+    .swipe-wrap > div {
+        float: left;
+        width: 100%;
+        position: relative;
+    }
+  </style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="index.js"></script>
+
+</body>
+</html>
