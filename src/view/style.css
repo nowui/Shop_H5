@@ -1,5 +1,6 @@
 .page {
     padding-top: 0.99rem;
+    padding-bottom: 0.99rem;
 }
 
 .header {
@@ -49,6 +50,7 @@
     color: #666666;
     text-align: center;
     padding-top: 5px;
+    background-color: #ffffff;
 }
 
 .productHome:before {
@@ -75,6 +77,7 @@
     color: #666666;
     text-align: center;
     padding-top: 5px;
+    background-color: #ffffff;
 }
 
 .productAddCart {
@@ -192,10 +195,9 @@
     float: left;
     width: 70%;
     height: 100%;
-    color: #ffffff;
     line-height: 0.99rem;
     text-align: left;
-    background-color: #000000;
+    background-color: #ffffff;
 }
 
 .checkTotalText {

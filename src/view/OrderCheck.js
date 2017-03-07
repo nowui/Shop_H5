@@ -7,7 +7,7 @@ import {NavBar, WhiteSpace, List, Button} from 'antd-mobile';
 import database from '../util/database';
 import style from './style.css';
 
-class Check extends Component {
+class OrderCheck extends Component {
     constructor(props) {
         super(props);
 
@@ -50,16 +50,16 @@ class Check extends Component {
                     </List>
                     <WhiteSpace size="lg"/>
                     <List renderHeader={() => '订单结算'}>
-                        <Item extra="￥100.00">
+                        <Item extra="￥0.00">
                             商品金额
                         </Item>
-                        <Item extra="￥1.00">
+                        <Item extra="￥0.00">
                             订单运费
                         </Item>
                     </List>
                 </div>
                 <div className={style.footer}>
-                    <div className={style.checkTotal}><span className={style.checkTotalText}>实付总金额: ￥101.00</span></div>
+                    <div className={style.checkTotal}><span className={style.checkTotalText}>实付总金额: ￥0.00</span></div>
                     <div className={style.checkSubmit}>提交订单</div>
                 </div>
             </div>
@@ -67,6 +67,6 @@ class Check extends Component {
     }
 }
 
-Check.propTypes = {};
+OrderCheck.propTypes = {};
 
-export default connect(({}) => ({}))(Check);
+export default connect(({}) => ({}))(OrderCheck);

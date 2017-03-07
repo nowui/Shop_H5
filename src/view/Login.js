@@ -74,7 +74,7 @@ class Login extends Component {
                                         required: true,
                                         message: '请输入帐号'
                                     }],
-                                    initialValue: '15900672218'
+                                    initialValue: '13560044643'
                                 })}
                                 error={!!getFieldError('user_phone')}
                                 clear

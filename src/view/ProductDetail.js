@@ -66,7 +66,7 @@ class ProductDetail extends Component {
         Popup.hide();
 
         this.props.dispatch(routerRedux.push({
-            pathname: '/check',
+            pathname: '/order/check',
             query: {}
         }));
     }
@@ -142,6 +142,8 @@ class ProductDetail extends Component {
                             <span style={{color: 'red'}}>￥{this.state.product.product_price}</span>
                         </Item>
                     </List>
+
+                    <div dangerouslySetInnerHTML={{__html: this.state.product.product_content}}></div>
                 </div>
                 <div className={style.footer}>
                     <div className={style.productHome}>

@@ -9,7 +9,7 @@ import Mine from './view/Mine';
 import Login from './view/Login';
 import Register from './view/Register'
 import ProductDetail from './view/ProductDetail';
-import Check from './view/Check';
+import OrderCheck from './view/OrderCheck';
 import OrderIndex from './view/OrderIndex';
 import DeliveryIndex from './view/DeliveryIndex';
 import DeliveryDetail from './view/DeliveryDetail';
@@ -35,7 +35,7 @@ export default function ({history}) {
     return (
         <Router history={history}>
             <Route path="/" onEnter={validate}>
-                <IndexRedirect to="home"/>
+                <IndexRedirect to="login"/>
                 <Route path="login" component={Login}/>
                 <Route path="register" component={Register}/>
                 <Route component={Main}>
@@ -45,7 +45,7 @@ export default function ({history}) {
                     <Route path="mine" component={Mine}/>
                 </Route>
                 <Route path="product/detail/:product_id" component={ProductDetail}/>
-                <Route path="check" component={Check}/>
+                <Route path="order/check" component={OrderCheck}/>
                 <Route path='order/index' component={OrderIndex}/>
                 <Route path="delivery/index" component={DeliveryIndex}/>
                 <Route path="delivery/add" component={DeliveryDetail}/>

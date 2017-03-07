@@ -65,8 +65,8 @@ class Mine extends Component {
                     <List>
                         <Item>
                             <div className={style.avatar}></div>
-                            <div className={style.name}>钟永强</div>
-                            <div className={style.clazz}>15900672218</div>
+                            <div className={style.name}>袁科</div>
+                            <div className={style.clazz}>13560044643</div>
                         </Item>
                     </List>
                     <WhiteSpace size="lg"/>
