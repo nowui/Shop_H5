@@ -23,11 +23,11 @@ export default function ({history}) {
         //     replace('/login');
         // }
 
-        if (next.location.pathname == '/mine' || next.location.pathname == '/cart') {
-            if ((database.getToken() == '' || database.getToken() == null)) {
-                    replace('/login');
-                }
-        }
+        // if (next.location.pathname == '/mine' || next.location.pathname == '/cart') {
+        //     if ((database.getToken() == '' || database.getToken() == null)) {
+        //             replace('/login');
+        //         }
+        // }
 
         callback();
     };
@@ -35,7 +35,7 @@ export default function ({history}) {
     return (
         <Router history={history}>
             <Route path="/" onEnter={validate}>
-                <IndexRedirect to="login"/>
+                <IndexRedirect to="home"/>
                 <Route path="login" component={Login}/>
                 <Route path="register" component={Register}/>
                 <Route component={Main}>
