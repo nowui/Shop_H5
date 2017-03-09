@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
+import {createForm} from 'rc-form';
 
-import {NavBar, WhiteSpace, List, Button} from 'antd-mobile';
+import {Toast, NavBar, WhiteSpace, List, TextareaItem, Popup} from 'antd-mobile';
 
+import Login from './Login';
+
+import constant from '../util/constant';
 import database from '../util/database';
 import style from './style.css';
 
@@ -12,55 +16,126 @@ class OrderCheck extends Component {
         super(props);
 
         this.state = {
-            tab: 0
+            delivery: {},
+            product: database.getProduct(),
+            productTotal: 0,
+            freight: 0,
+            allTotal: 0
         }
+
     }
 
     componentDidMount() {
-
+        this.handleReset();
     }
 
     componentWillUnmount() {
-
+        Popup.hide();
     }
 
-    handleLeftClick() {
+    handleReset() {
+        let productTotal = 0;
+        for (let i = 0; i < this.state.product.length; i++) {
+            productTotal += this.state.product[i].product_price[this.state.product[i].product_price.length - 1].product_price * this.state.product[i].number;
+        }
+
+        this.setState({
+            delivery: database.getDelivery(),
+            productTotal: productTotal,
+            allTotal: productTotal + this.state.freight
+        });
+    }
+
+    handleBack() {
         this.props.dispatch(routerRedux.goBack());
+    }
+
+    handleLoginSucess() {
+        this.handleReset();
+    }
+
+    handleDelivery() {
+        if (database.getToken() == '') {
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+        } else {
+            this.props.dispatch(routerRedux.push({
+                pathname: '/delivery/index',
+                query: {}
+            }));
+        }
+    }
+
+    handleSubmit() {
+        if (typeof (this.state.delivery.delivery_name) == 'undefined') {
+            Toast.fail('请选择收货地址', constant.duration);
+        }
     }
 
     render() {
         const Item = List.Item;
+        const {getFieldProps} = this.props.form;
 
         return (
             <div>
                 <NavBar className={style.header} mode="dark" leftContent="返回"
-                        onLeftClick={this.handleLeftClick.bind(this)}>填写订单</NavBar>
+                        onLeftClick={this.handleBack.bind(this)}>填写订单</NavBar>
                 <div className={style.page}>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item arrow="horizontal">
-                            收货地址
+                        <Item arrow="horizontal" onClick={this.handleDelivery.bind(this)}>
+                            {
+                                typeof (this.state.delivery.delivery_name) == 'undefined' ?
+                                    '收货地址'
+                                    :
+                                    <div>
+                                        <div>{this.state.delivery.delivery_name} {this.state.delivery.delivery_phone}</div>
+                                        <div className={style.deliveryAddress}>{this.state.delivery.delivery_address}</div>
+                                    </div>
+                            }
                         </Item>
                     </List>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item arrow="horizontal">
-                            支付方式
-                        </Item>
+                        {
+                            this.state.product.map(function (item) {
+                                return (
+                                    <Item key={item.product_id} extra={'× ' + item.number}>
+                                        <img className={style.productListImage}
+                                             src={constant.host + item.product_image}/>
+                                        <div className={style.productListText}>
+                                             {item.product_name}
+                                            <div>￥{item.product_price[item.product_price.length - 1].product_price.toFixed(2)}</div>
+                                        </div>
+                                    </Item>
+                                )
+                            }.bind(this))
+                        }
                     </List>
                     <WhiteSpace size="lg"/>
-                    <List renderHeader={() => '订单结算'}>
-                        <Item extra="￥0.00">
+                    <List>
+                        <Item extra={'￥' + this.state.productTotal.toFixed(2)}>
                             商品金额
                         </Item>
-                        <Item extra="￥0.00">
-                            订单运费
+                        <Item extra={'￥' + this.state.freight.toFixed(2)}>
+                            运费
                         </Item>
+                    </List>
+
+                    <WhiteSpace size="lg"/>
+                    <List>
+                        <TextareaItem
+                            {...getFieldProps('count', {
+                                initialValue: '',
+                            })}
+                            placeholder="请输入买家留言"
+                            rows={3}
+                            count={100}
+                        />
                     </List>
                 </div>
                 <div className={style.footer}>
-                    <div className={style.checkTotal}><span className={style.checkTotalText}>实付总金额: ￥0.00</span></div>
-                    <div className={style.checkSubmit}>提交订单</div>
+                    <div className={style.checkTotal}><span className={style.checkTotalText}>实付总金额: ￥{this.state.allTotal.toFixed(2)}</span></div>
+                    <div className={style.checkSubmit} onClick={this.handleSubmit.bind(this)}>提交订单</div>
                 </div>
             </div>
         );
@@ -68,5 +143,7 @@ class OrderCheck extends Component {
 }
 
 OrderCheck.propTypes = {};
+
+OrderCheck = createForm()(OrderCheck);
 
 export default connect(({}) => ({}))(OrderCheck);

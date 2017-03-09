@@ -24,7 +24,7 @@ class OrderIndex extends Component {
 
     }
 
-    handleLeftClick() {
+    handleBack() {
         this.props.dispatch(routerRedux.goBack());
     }
 
@@ -34,7 +34,7 @@ class OrderIndex extends Component {
         return (
             <div>
                 <NavBar className={style.header} mode="dark" leftContent="返回"
-                        onLeftClick={this.handleLeftClick.bind(this)}>我的订单</NavBar>
+                        onLeftClick={this.handleBack.bind(this)}>我的订单</NavBar>
                 <div className={style.page}>
                     <WhiteSpace size="lg"/>
                     <List>

@@ -45,11 +45,11 @@ class DeliveryDetail extends Component {
         }).post();
     }
 
-    handleLeftClick() {
+    handleBack() {
         this.props.dispatch(routerRedux.goBack());
     }
 
-    handleDeleteClick() {
+    handleDelete() {
         Modal.alert('删除', '确定删除么?', [
             { text: '取消', onPress: function () {
                 
@@ -61,10 +61,10 @@ class DeliveryDetail extends Component {
                         delivery_id: this.props.params.delivery_id
                     },
                     success: function (json) {
-                        Toast.success('删除成功');
+                        Toast.success('删除成功', constant.duration);
 
                         setTimeout(function () {
-                            this.handleLeftClick();
+                            this.handleBack();
                         }.bind(this), constant.timeout * 300);
                     }.bind(this),
                     complete: function () {
@@ -79,13 +79,13 @@ class DeliveryDetail extends Component {
         this.props.form.validateFields((errors, values) => {
             if (!errors) {
                 if (!validate.isPhone(values.delivery_phone)) {
-                    Toast.fail('手机号码格式不对');
+                    Toast.fail('手机号码格式不对', constant.duration);
 
                     return;
                 }
 
                 if (values.delivery_province_city_area.length == 0) {
-                    Toast.fail('请选择省市区');
+                    Toast.fail('请选择省市区', constant.duration);
 
                     return;
                 }
@@ -105,10 +105,10 @@ class DeliveryDetail extends Component {
                     url: '/delivery/' + action,
                     data: values,
                     success: function (json) {
-                        Toast.success('保存成功');
+                        Toast.success('保存成功', constant.duration);
 
                         setTimeout(function () {
-                            this.handleLeftClick();
+                            this.handleBack();
                         }.bind(this), constant.timeout * 300);
                     }.bind(this),
                     complete: function () {
@@ -121,12 +121,12 @@ class DeliveryDetail extends Component {
 
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
-        const rightContent = this.props.route.path.indexOf('/edit/') > -1 ? [<div onClick={this.handleDeleteClick.bind(this)} key='add'>删除</div>] : [];
+        const rightContent = this.props.route.path.indexOf('/edit/') > -1 ? [<div onClick={this.handleDelete.bind(this)} key='add'>删除</div>] : [];
 
         return (
             <div>
                 <NavBar className={style.header} mode="dark" leftContent="返回"
-                        onLeftClick={this.handleLeftClick.bind(this)}
+                        onLeftClick={this.handleBack.bind(this)}
                         rightContent={rightContent}>快递地址</NavBar>
                 <div className={style.page}>
                     <WhiteSpace size="lg"/>

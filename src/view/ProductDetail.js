@@ -5,6 +5,7 @@ import {Toast, NavBar, List, Popup, Stepper} from 'antd-mobile';
 import {Swipe, SwipeItem} from 'swipejs/react';
 
 import constant from '../util/constant';
+import database from '../util/database';
 import http from '../util/http';
 
 import style from './style.css';
@@ -14,11 +15,14 @@ class ProductDetail extends Component {
         super(props);
 
         this.state = {
+            is_cart: true,
+            number: 1,
             product: {
                 product_image: [],
+                product_image_list: [],
+                product_price: [],
                 product_stock: 0
-            },
-            number: 1
+            }
         }
     }
 
@@ -37,7 +41,10 @@ class ProductDetail extends Component {
                 product_id: this.props.params.product_id
             },
             success: function (json) {
+                json.data.product_image_list = JSON.parse(json.data.product_image_list);
                 json.data.product_image = JSON.parse(json.data.product_image);
+                json.data.product_price = JSON.parse(json.data.sku_list[0].product_price);
+                json.data.product_stock = json.data.sku_list[0].product_stock;
 
                 this.setState({
                     product: json.data
@@ -51,7 +58,7 @@ class ProductDetail extends Component {
         }).post();
     }
 
-    handleLeftClick() {
+    handleBack() {
         this.props.dispatch(routerRedux.goBack());
     }
 
@@ -63,6 +70,18 @@ class ProductDetail extends Component {
     }
 
     handleSubmit() {
+        if (this.state.is_cart) {
+
+        } else {
+            database.setProduct([{
+                product_id: this.state.product.product_id,
+                product_name: this.state.product.product_name,
+                product_image: this.state.product.product_image[0],
+                product_price: this.state.product.product_price,
+                number: this.state.number
+            }]);
+        }
+
         Popup.hide();
 
         this.props.dispatch(routerRedux.push({
@@ -71,19 +90,30 @@ class ProductDetail extends Component {
         }));
     }
 
-    handleCartClick() {
+    handleCart() {
+        this.setState({
+            is_cart: true
+        });
+
         this.handlePopup();
     }
 
-    handleBuyClick() {
+    handleBuy() {
+        this.setState({
+            is_cart: false
+        });
+
         this.handlePopup();
     }
 
     handlePopup() {
         Popup.show(<div>
-            <div className={style.productPopupImage}><img className={style.productCardImage} src={constant.host + this.state.product.product_image[0]}/></div>
-            <div className={style.productPopupPrice}>￥{this.state.product.product_price}</div>
-            <div className={style.productPopupStock}>库存：{this.state.product.product_stock}</div>
+            <div className={style.productPopupImage}><img className={style.productCardImage}
+                                                          src={constant.host + this.state.product.product_image[0]}/>
+            </div>
+            <div className={style.productPopupText}>
+                <span className={style.productPopupRedText}>￥{this.state.product.product_price[this.state.product.product_price.length - 1].product_price}</span>
+            </div>
             <List className={style.productPopupNumber}>
                 <List.Item extra={
                     <Stepper
@@ -105,11 +135,11 @@ class ProductDetail extends Component {
         return (
             <div>
                 <NavBar className={style.header} mode="dark" leftContent="返回"
-                        onLeftClick={this.handleLeftClick.bind(this)}
+                        onLeftClick={this.handleBack.bind(this)}
                 >商品明细</NavBar>
                 <div className={style.page}>
                     {
-                        this.state.product.product_image.length == 0 ?
+                        this.state.product.product_image_list.length == 0 ?
                             ''
                             :
                             <Swipe className=''
@@ -123,7 +153,7 @@ class ProductDetail extends Component {
                                    disableScroll={false}
                                    stopPropagation={false}>
                                 {
-                                    this.state.product.product_image.map(function (item, index) {
+                                    this.state.product.product_image_list.map(function (item, index) {
                                         return (
                                             <SwipeItem className={style.productImage} key={index}>
                                                 <img className={style.productCardImage}
@@ -139,7 +169,12 @@ class ProductDetail extends Component {
                         <Item>
                             {this.state.product.product_name}
                             <br/>
-                            <span style={{color: 'red'}}>￥{this.state.product.product_price}</span>
+                            {
+                                this.state.product.product_price.length > 0 ?
+                                    <span className={style.productPopupRedText}>￥{this.state.product.product_price[this.state.product.product_price.length - 1].product_price}</span>
+                                    :
+                                    ''
+                            }
                         </Item>
                     </List>
 
@@ -154,8 +189,8 @@ class ProductDetail extends Component {
                         <img className={style.productIcon} src={require('../assets/image/favor.png')}/>
                         <div className={style.productFont}>收藏</div>
                     </div>
-                    <div className={style.productAddCart} onClick={this.handleCartClick.bind(this)}>加入购物车</div>
-                    <div className={style.productBuy} onClick={this.handleBuyClick.bind(this)}>立即购买</div>
+                    <div className={style.productAddCart} onClick={this.handleCart.bind(this)}>加入购物车</div>
+                    <div className={style.productBuy} onClick={this.handleBuy.bind(this)}>立即购买</div>
                 </div>
             </div>
         );

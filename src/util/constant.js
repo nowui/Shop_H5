@@ -17,8 +17,8 @@ export default {
   scrollModalHeight: function () {
     return 519 - 115 - (519 - 115) % 39;
   },
-  timeout: 10,
-  duration: 0.3,
+  timeout: 1200,
+  duration: 1.2,
   page_size: 10,
   action: '操作',
   search: '搜索',

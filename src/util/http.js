@@ -5,72 +5,68 @@ import constant from './constant';
 import database from './database';
 
 const operation = (promise) => {
-  let hasCanceled_ = false;
-  const wrappedPromise = new Promise((resolve, reject) => {
-    promise.then((val) =>
-      hasCanceled_ ? reject({isCanceled: true}) : resolve(val)
-    );
-    promise.catch((error) =>
-      hasCanceled_ ? reject({isCanceled: true}) : reject(error)
-    );
-  });
-  return {
-    promise: wrappedPromise,
-    cancel() {
-      hasCanceled_ = true;
-    },
-  };
+    let hasCanceled_ = false;
+    const wrappedPromise = new Promise((resolve, reject) => {
+        promise.then((val) =>
+            hasCanceled_ ? reject({isCanceled: true}) : resolve(val)
+        );
+        promise.catch((error) =>
+            hasCanceled_ ? reject({isCanceled: true}) : reject(error)
+        );
+    });
+    return {
+        promise: wrappedPromise,
+        cancel() {
+            hasCanceled_ = true;
+        },
+    };
 };
 
 export default function http(config) {
-  const request = operation(fetch(constant.host + config.url, {
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Token': database.getToken(),
-      'Platform': constant.platform,
-      'Version': constant.version
-    },
-    method: 'POST',
-      mode: 'cors',
-    body: JSON.stringify(config.data)
-  }));
+    const request = operation(fetch(constant.host + config.url, {
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Token': database.getToken(),
+            'Platform': constant.platform,
+            'Version': constant.version
+        },
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(config.data)
+    }));
 
-  return {
-    post() {
-      Toast.loading("加载中..", 0);
+    return {
+        post() {
+            Toast.loading("加载中..", 0);
 
-      request.promise.then(function (response) {
-        if (response.status !== 200) {
-          return;
-        }
-        response.json().then(function (json) {
-          if (json.code == 200) {
-            Toast.hide();
+            request.promise.then(function (response) {
+                if (response.status !== 200) {
+                    return;
+                }
+                response.json().then(function (json) {
+                    if (json.code == 200) {
+                        Toast.hide();
 
-            setTimeout(function () {
-              config.success(json);
-            }.bind(this), constant.timeout);
-          } else {
-            Toast.fail(json.message);
-          }
+                        config.success(json);
+                    } else {
+                        Toast.fail(json.message, constant.duration);
+                    }
 
-          setTimeout(function () {
-            config.complete();
-          }.bind(this), constant.timeout);
-        })
-      }).catch(function (error) {
-        Toast.fail(constant.error);
+                    config.complete();
+                })
+            }).catch(function (error) {
+                Toast.fail(constant.error, constant.duration);
 
-        setTimeout(function () {
-          config.complete();
-        }.bind(this), constant.timeout);
-      });
+                setTimeout(function () {
+                    config.complete();
+                }.bind(this), constant.timeout);
+            });
 
-      return request;
-    },
-    cancel() {
-      request.cancel();
-    },
-  };
+            return request;
+        },
+        cancel() {
+            request.cancel();
+        },
+    };
 }

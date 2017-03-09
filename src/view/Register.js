@@ -31,7 +31,7 @@ class Register extends Component {
                     url: '/member/login',
                     data: values,
                     success: function (json) {
-                        Toast.success('登录成功');
+                        Toast.success('登录成功', constant.duration);
 
                         database.setToken(json.data.token);
                         database.setName(json.data.student_name);
@@ -52,7 +52,7 @@ class Register extends Component {
         });
     }
 
-    handleLeftClick() {
+    handleBack() {
         this.props.dispatch(routerRedux.goBack());
     }
 
@@ -62,7 +62,7 @@ class Register extends Component {
         return (
             <div>
                 <NavBar className={style.header} mode="dark" leftContent="返回"
-                        onLeftClick={this.handleLeftClick.bind(this)}>用户注册</NavBar>
+                        onLeftClick={this.handleBack.bind(this)}>用户注册</NavBar>
                 <div className={style.page}>
                     <form style={{margin: '50px 10px 0px 10px'}}>
                         <List>

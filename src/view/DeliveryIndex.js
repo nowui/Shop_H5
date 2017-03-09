@@ -44,18 +44,18 @@ class DeliveryIndex extends Component {
         }).post();
     }
 
-    handleLeftClick() {
+    handleBack() {
         this.props.dispatch(routerRedux.goBack());
     }
 
-    handleAddClick() {
+    handleAdd() {
         this.props.dispatch(routerRedux.push({
             pathname: '/delivery/add',
             query: {}
         }));
     }
 
-    handleEditClick(delivery_id) {
+    handleEdit(delivery_id) {
         this.props.dispatch(routerRedux.push({
             pathname: '/delivery/edit/' + delivery_id,
             query: {}
@@ -68,8 +68,8 @@ class DeliveryIndex extends Component {
         return (
             <div>
                 <NavBar className={style.header} mode="dark" leftContent="返回"
-                        onLeftClick={this.handleLeftClick.bind(this)}
-                        rightContent={[<div onClick={this.handleAddClick.bind(this)} key='add'>新增</div>]}>快递地址</NavBar>
+                        onLeftClick={this.handleBack.bind(this)}
+                        rightContent={[<div onClick={this.handleAdd.bind(this)} key='add'>新增</div>]}>快递地址</NavBar>
                 <div className={style.page}>
                     <WhiteSpace size="lg"/>
                     <List>
@@ -77,7 +77,7 @@ class DeliveryIndex extends Component {
                             this.props.delivery.list.map(function (item) {
                                 return (
                                     <Item key={item.delivery_id}
-                                          onClick={this.handleEditClick.bind(this, item.delivery_id)}>
+                                          onClick={this.handleEdit.bind(this, item.delivery_id)}>
                                         <div>{item.delivery_name} {item.delivery_phone}</div>
                                         <div>{item.delivery_address}</div>
                                     </Item>

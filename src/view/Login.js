@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 import {createForm} from 'rc-form';
-import {Toast, NavBar, List, InputItem, Button} from 'antd-mobile';
+import {Toast, NavBar, List, InputItem, Button, Popup} from 'antd-mobile';
 
 import constant from '../util/constant';
 import database from '../util/database';
@@ -24,25 +24,30 @@ class Login extends Component {
 
     }
 
+    handleClose() {
+        Popup.hide();
+    }
+
     handleSubmit() {
         this.props.form.validateFields((errors, values) => {
             if (!errors) {
+                values.type = this.props.type;
+                values.data = this.props.data;
+
                 http({
                     url: '/member/login',
                     data: values,
                     success: function (json) {
-                        Toast.success('登录成功');
+                        Toast.success('登录成功', constant.duration);
 
                         database.setToken(json.data.token);
-                        database.setName(json.data.student_name);
-                        database.setClazz(json.data.clazz_name);
+                        database.setDelivery(json.data.delivery);
 
                         setTimeout(function () {
-                            this.props.dispatch(routerRedux.push({
-                                pathname: '/home',
-                                query: {}
-                            }));
-                        }.bind(this), constant.timeout * 300);
+                            this.props.handleLoginSucess();
+
+                            Popup.hide();
+                        }.bind(this), constant.timeout);
                     }.bind(this),
                     complete: function () {
 
@@ -52,20 +57,14 @@ class Login extends Component {
         });
     }
 
-    handleRegister() {
-        this.props.dispatch(routerRedux.push({
-            pathname: '/register',
-            query: {}
-        }));
-    }
-
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
 
         return (
             <div>
-                <NavBar className={style.header} mode="dark" iconName={false}>用户登录</NavBar>
-                <div className={style.page}>
+                <NavBar className={style.header} mode="dark" iconName={false}
+                        rightContent={[<div onClick={this.handleClose.bind(this)} key='close'>关闭</div>]}>用户登录</NavBar>
+                <div className={style.login}>
                     <form style={{margin: '50px 10px 0px 10px'}}>
                         <List>
                             <InputItem
@@ -99,7 +98,7 @@ class Login extends Component {
                         <Button type="primary" onClick={this.handleSubmit.bind(this)}>确定</Button>
                     </div>
                     {/*<div style={{margin: '20px 10px 0px 10px'}}>*/}
-                        {/*<div style={{textAlign: 'right'}} onClick={this.handleRegister.bind(this)}>免费注册</div>*/}
+                    {/*<div style={{textAlign: 'right'}} onClick={this.handleRegister.bind(this)}>免费注册</div>*/}
                     {/*</div>*/}
                 </div>
             </div>
@@ -107,8 +106,17 @@ class Login extends Component {
     }
 }
 
-Login.propTypes = {};
+Login.propTypes = {
+    type: React.PropTypes.string,
+    data: React.PropTypes.string,
+    handleLoginSucess: React.PropTypes.func.isRequired
+};
+
+Login.defaultProps = {
+    type: 'NORMAL',
+    data: ''
+};
 
 Login = createForm()(Login);
 
-export default connect(({}) => ({}))(Login);
+export default Login;

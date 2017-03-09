@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {NavBar, WhiteSpace, List, Button} from 'antd-mobile';
+import {Toast, NavBar, WhiteSpace, List, Button, Popup} from 'antd-mobile';
 
+import Login from './Login';
+
+import constant from '../util/constant';
 import database from '../util/database';
 import style from './style.css';
 
@@ -12,7 +15,7 @@ class Mine extends Component {
         super(props);
 
         this.state = {
-            tab: 0
+            is_login: database.getToken() != ''
         }
     }
 
@@ -25,33 +28,42 @@ class Mine extends Component {
     }
 
     handleOrder() {
-        this.props.dispatch(routerRedux.push({
-            pathname: '/order/index',
-            query: {}
-        }));
+        if (database.getToken() == '') {
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+        } else {
+            this.props.dispatch(routerRedux.push({
+                pathname: '/order/index',
+                query: {}
+            }));
+        }
     }
 
     handleDelivery() {
-        this.props.dispatch(routerRedux.push({
-            pathname: '/delivery/index',
-            query: {}
-        }));
+        if (database.getToken() == '') {
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+        } else {
+            this.props.dispatch(routerRedux.push({
+                pathname: '/delivery/index',
+                query: {}
+            }));
+        }
     }
 
-    handleSubmit() {
-        database.setToken('');
+    handleLogout() {
+        database.removeToken();
+        database.removeDelivery();
 
-        this.props.dispatch({
-            type: 'home/fetch',
-            data: {
-                list: []
-            }
+        this.setState({
+            is_login: false
         });
 
-        this.props.dispatch(routerRedux.push({
-            pathname: '/login',
-            query: {}
-        }));
+        Toast.success('退出成功', constant.duration);
+    }
+
+    handleLoginSucess() {
+        this.setState({
+            is_login: true
+        });
     }
 
     render() {
@@ -65,8 +77,18 @@ class Mine extends Component {
                     <List>
                         <Item>
                             <div className={style.avatar}></div>
-                            <div className={style.name}>袁科</div>
-                            <div className={style.clazz}>13560044643</div>
+                            {
+                                this.state.is_login ?
+                                    <div className={style.name}>袁科</div>
+                                    :
+                                    ''
+                            }
+                            {
+                                this.state.is_login ?
+                                    <div className={style.clazz}>13560044643</div>
+                                    :
+                                    ''
+                            }
                         </Item>
                     </List>
                     <WhiteSpace size="lg"/>
@@ -80,10 +102,15 @@ class Mine extends Component {
                             收货地址
                         </Item>
                     </List>
-                    <div style={{margin: '50px 10px 0px 10px'}}>
-                        <Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}
-                                onClick={this.handleSubmit.bind(this)}>退出系统</Button>
-                    </div>
+                    {
+                        this.state.is_login ?
+                            <div style={{margin: '50px 10px 0px 10px'}}>
+                                <Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}
+                                        onClick={this.handleLogout.bind(this)}>退出系统</Button>
+                            </div>
+                            :
+                            ''
+                    }
                 </div>
             </div>
         );
@@ -92,4 +119,4 @@ class Mine extends Component {
 
 Mine.propTypes = {};
 
-export default connect(({home}) => ({home}))(Mine);
+export default connect(({}) => ({}))(Mine);
