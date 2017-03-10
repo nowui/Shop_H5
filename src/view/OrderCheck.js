@@ -9,6 +9,8 @@ import Login from './Login';
 
 import constant from '../util/constant';
 import database from '../util/database';
+import http from '../util/http';
+
 import style from './style.css';
 
 class OrderCheck extends Component {
@@ -36,7 +38,7 @@ class OrderCheck extends Component {
     handleReset() {
         let productTotal = 0;
         for (let i = 0; i < this.state.product.length; i++) {
-            productTotal += this.state.product[i].product_price[this.state.product[i].product_price.length - 1].product_price * this.state.product[i].number;
+            productTotal += this.state.product[i].product_price[0].product_price * this.state.product[i].product_number;
         }
 
         this.setState({
@@ -69,6 +71,37 @@ class OrderCheck extends Component {
         if (typeof (this.state.delivery.delivery_name) == 'undefined') {
             Toast.fail('请选择收货地址', constant.duration);
         }
+
+        let product_list = [];
+
+        for (let i = 0; i < this.state.product.length; i++) {
+            product_list.push({
+                sku_id: this.state.product[i].sku_id,
+                product_number: this.state.product[i].product_number
+            });
+        }
+
+        if (product_list.length == 0) {
+            Toast.fail('请选购商品', constant.duration);
+        }
+
+        http({
+            url: '/order/save',
+            data: {
+                order_delivery_name: this.state.delivery.delivery_name,
+                order_delivery_phone: this.state.delivery.delivery_phone,
+                order_delivery_address: this.state.delivery.delivery_address,
+                order_message: this.props.form.getFieldValue('order_message'),
+                order_pay_type: 'WECHAT_PAY',
+                product_list: product_list
+            },
+            success: function (json) {
+
+            }.bind(this),
+            complete: function () {
+
+            }.bind(this)
+        }).post();
     }
 
     render() {
@@ -99,12 +132,12 @@ class OrderCheck extends Component {
                         {
                             this.state.product.map(function (item) {
                                 return (
-                                    <Item key={item.product_id} extra={'× ' + item.number}>
+                                    <Item key={item.product_id} extra={'× ' + item.product_number}>
                                         <img className={style.productListImage}
                                              src={constant.host + item.product_image}/>
                                         <div className={style.productListText}>
                                              {item.product_name}
-                                            <div>￥{item.product_price[item.product_price.length - 1].product_price.toFixed(2)}</div>
+                                            <div>￥{item.product_price[0].product_price.toFixed(2)}</div>
                                         </div>
                                     </Item>
                                 )
@@ -124,7 +157,7 @@ class OrderCheck extends Component {
                     <WhiteSpace size="lg"/>
                     <List>
                         <TextareaItem
-                            {...getFieldProps('count', {
+                            {...getFieldProps('order_message', {
                                 initialValue: '',
                             })}
                             placeholder="请输入买家留言"

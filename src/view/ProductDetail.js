@@ -16,7 +16,7 @@ class ProductDetail extends Component {
 
         this.state = {
             is_cart: true,
-            number: 1,
+            product_number: 1,
             product: {
                 product_image: [],
                 product_image_list: [],
@@ -45,6 +45,7 @@ class ProductDetail extends Component {
                 json.data.product_image = JSON.parse(json.data.product_image);
                 json.data.product_price = JSON.parse(json.data.sku_list[0].product_price);
                 json.data.product_stock = json.data.sku_list[0].product_stock;
+                json.data.sku_id = json.data.sku_list[0].sku_id;
 
                 this.setState({
                     product: json.data
@@ -62,10 +63,9 @@ class ProductDetail extends Component {
         this.props.dispatch(routerRedux.goBack());
     }
 
-    handleChange(number) {
-        console.log(number);
+    handleChange(product_number) {
         this.setState({
-            number: number
+            product_number: product_number
         });
     }
 
@@ -78,7 +78,8 @@ class ProductDetail extends Component {
                 product_name: this.state.product.product_name,
                 product_image: this.state.product.product_image[0],
                 product_price: this.state.product.product_price,
-                number: this.state.number
+                product_number: this.state.product_number,
+                sku_id: this.state.product.sku_id
             }]);
         }
 
@@ -118,7 +119,7 @@ class ProductDetail extends Component {
                 <List.Item extra={
                     <Stepper
                         style={{width: '100%', minWidth: '2rem'}}
-                        showNumber max={this.state.product.product_stock} min={1} defaultValue={this.state.number}
+                        showNumber max={this.state.product.product_stock} min={1} defaultValue={this.state.product_number}
                         onChange={this.handleChange.bind(this)}
                     />}
                 >
@@ -171,7 +172,7 @@ class ProductDetail extends Component {
                             <br/>
                             {
                                 this.state.product.product_price.length > 0 ?
-                                    <span className={style.productPopupRedText}>￥{this.state.product.product_price[this.state.product.product_price.length - 1].product_price}</span>
+                                    <span className={style.productPopupRedText}>￥{this.state.product.product_price[0].product_price}</span>
                                     :
                                     ''
                             }
