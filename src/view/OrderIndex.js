@@ -4,7 +4,8 @@ import {routerRedux} from 'dva/router';
 
 import {NavBar, WhiteSpace, List, Button} from 'antd-mobile';
 
-import database from '../util/database';
+import http from '../util/http';
+
 import style from './style.css';
 
 class OrderIndex extends Component {
@@ -12,20 +13,50 @@ class OrderIndex extends Component {
         super(props);
 
         this.state = {
-            tab: 0
+            list: []
         }
     }
 
     componentDidMount() {
-
+        this.handleLoad();
     }
 
     componentWillUnmount() {
+        this.props.dispatch({
+            type: 'order/fetch',
+            data: {
+                scroll_top: document.body.scrollTop
+            }
+        });
+    }
 
+    handleLoad() {
+        http({
+            url: '/order/list',
+            data: {
+                page_index: 1,
+                page_size: 10
+            },
+            success: function (json) {
+                this.setState({
+                    list: json.data
+                });
+            }.bind(this),
+            complete: function () {
+                document.body.scrollTop = this.props.order.scroll_top;
+            }.bind(this)
+        }).post();
     }
 
     handleBack() {
         this.props.dispatch(routerRedux.goBack());
+    }
+
+    handleClick(order_id) {
+        this.props.dispatch(routerRedux.push({
+            pathname: '/order/detail/' + order_id,
+            query: {}
+        }));
     }
 
     render() {
@@ -38,12 +69,16 @@ class OrderIndex extends Component {
                 <div className={style.page}>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item extra="￥100.00">
-                            商品金额
-                        </Item>
-                        <Item extra="-￥1.00">
-                            订单运费
-                        </Item>
+                        {
+                            this.state.list.map(function (item) {
+                                return (
+                                    <Item arrow="horizontal" key={item.order_id}
+                                          onClick={this.handleClick.bind(this, item.order_id)}>
+                                        {item.order_number}
+                                    </Item>
+                                )
+                            }.bind(this))
+                        }
                     </List>
                 </div>
             </div>

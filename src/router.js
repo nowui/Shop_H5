@@ -9,8 +9,10 @@ import Mine from './view/Mine';
 import Login from './view/Login';
 import Register from './view/Register'
 import ProductDetail from './view/ProductDetail';
-import OrderCheck from './view/OrderCheck';
 import OrderIndex from './view/OrderIndex';
+import OrderDetail from './view/OrderDetail';
+import OrderCheck from './view/OrderCheck';
+import OrderResult from './view/OrderResult';
 import DeliveryIndex from './view/DeliveryIndex';
 import DeliveryDetail from './view/DeliveryDetail';
 
@@ -45,8 +47,10 @@ export default function ({history}) {
                     <Route path="mine" component={Mine}/>
                 </Route>
                 <Route path="product/detail/:product_id" component={ProductDetail}/>
-                <Route path="order/check" component={OrderCheck}/>
                 <Route path='order/index' component={OrderIndex}/>
+                <Route path='order/detail/:order_id' component={OrderDetail}/>
+                <Route path="order/check" component={OrderCheck}/>
+                <Route path="order/result/:price" component={OrderResult}/>
                 <Route path="delivery/index" component={DeliveryIndex}/>
                 <Route path="delivery/add" component={DeliveryDetail}/>
                 <Route path="delivery/edit/:delivery_id" component={DeliveryDetail}/>

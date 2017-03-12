@@ -68,6 +68,12 @@ class OrderCheck extends Component {
     }
 
     handleSubmit() {
+        if (database.getToken() == '') {
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+
+            return;
+        }
+
         if (typeof (this.state.delivery.delivery_name) == 'undefined') {
             Toast.fail('请选择收货地址', constant.duration);
         }
@@ -96,7 +102,12 @@ class OrderCheck extends Component {
                 product_list: product_list
             },
             success: function (json) {
+                database.setProduct([]);
 
+                this.props.dispatch(routerRedux.push({
+                    pathname: '/order/result/' + json.data,
+                    query: {}
+                }));
             }.bind(this),
             complete: function () {
 
