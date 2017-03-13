@@ -12,6 +12,7 @@ const app = dva({});
 
 // 3. Model
 app.model(require('./model/home'));
+app.model(require('./model/category'));
 app.model(require('./model/apply'));
 app.model(require('./model/order'));
 app.model(require('./model/delivery'));

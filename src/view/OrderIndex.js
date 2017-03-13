@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {NavBar, WhiteSpace, List, Button} from 'antd-mobile';
+import {NavBar, WhiteSpace, List} from 'antd-mobile';
 
 import http from '../util/http';
 
@@ -71,10 +71,31 @@ class OrderIndex extends Component {
                     <List>
                         {
                             this.state.list.map(function (item) {
+
+                                let order_status = '';
+                                if (item.order_status == 'WAIT') {
+                                    order_status = '代付款';
+                                } else if (item.order_status == 'EXPIRE') {
+                                    order_status = '超时未付款';
+                                } else if (item.order_status == 'CONFIRM') {
+                                    order_status = '已付款，待确认';
+                                } else if (item.order_status == 'PAYED') {
+                                    order_status = '已付款';
+                                } else if (item.order_status == 'SEND') {
+                                    order_status = '已发货';
+                                } else if (item.order_status == 'RECEIVED') {
+                                    order_status = '货已签收';
+                                } else if (item.order_status == 'FINISH') {
+                                    order_status = '订单完成';
+                                } else if (item.order_status == 'CANCEL') {
+                                    order_status = '订单取消';
+                                }
+
                                 return (
-                                    <Item arrow="horizontal" key={item.order_id}
+                                    <Item arrow="horizontal" extra={order_status} key={item.order_id}
                                           onClick={this.handleClick.bind(this, item.order_id)}>
-                                        {item.order_number}
+                                        <div> {item.order_number}</div>
+                                        <div>￥{item.order_receivable_amount.toFixed(2)}</div>
                                     </Item>
                                 )
                             }.bind(this))

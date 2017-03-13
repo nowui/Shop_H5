@@ -93,10 +93,31 @@ class Mine extends Component {
                     </List>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item thumb={require('../assets/image/order.png')} arrow="horizontal"
+                        <Item extra="查看全部订单" arrow="horizontal"
                               onClick={this.handleOrder.bind(this)}>
                             我的订单
                         </Item>
+                        <Item>
+                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                                <img src={require('../assets/image/pay.png')}/>
+                                <div className={style.mineOrderItemText}>代付款</div>
+                            </div>
+                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                                <img src={require('../assets/image/send.png')}/>
+                                <div className={style.mineOrderItemText}>代发货</div>
+                            </div>
+                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                                <img src={require('../assets/image/deliver.png')}/>
+                                <div className={style.mineOrderItemText}>代收货</div>
+                            </div>
+                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                                <img src={require('../assets/image/comment.png')}/>
+                                <div className={style.mineOrderItemText}>已完成</div>
+                            </div>
+                        </Item>
+                    </List>
+                    <WhiteSpace size="lg"/>
+                    <List>
                         <Item thumb={require('../assets/image/location.png')} arrow="horizontal"
                               onClick={this.handleDelivery.bind(this)}>
                             收货地址
