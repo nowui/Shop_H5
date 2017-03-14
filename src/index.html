@@ -1,62 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-  <meta name="format-detection" content="telephone=no"/>
-  <meta name="format-detection" content="email=no"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-  <title>微信商城</title>
-  <link rel="stylesheet" href="index.css" />
-  <style>
-    #root {
-      margin: 0 auto;
-      min-width: 320px;
-      max-width: 640px;
-    }
-    .am-navbar {
-      /*border-bottom: 1PX solid #ddd;*/
-      height: 0.99rem;
-    }
-    .am-tab-bar-bar {
-      min-width: 320px;
-      max-width: 640px;
-    }
-    .home .am-list-extra {
-      flex-basis: 0% !important;
-    }
-    .course .am-list-extra {
-      color: #000000 !important;
-      flex-basis: 80% !important;
-    }
-    .content .am-list-extra {
-      flex-basis: 0% !important;
-    }
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <!--<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"/>-->
+    <script>
+        (function (baseFontSize, fontscale) {
+            var _baseFontSize = baseFontSize || 100;
+            var _fontscale = fontscale || 1;
+            var win = window;
+            var doc = win.document;
+            var ua = navigator.userAgent;
+            var matches = ua.match(/Android[\S\s]+AppleWebkit\/(\d{3})/i);
+            var UCversion = ua.match(/U3\/((\d+|\.){5,})/i);
+            var isUCHd = UCversion && parseInt(UCversion[1].split('.').join(''), 10) >= 80;
+            var isIos = navigator.appVersion.match(/(iphone|ipad|ipod)/gi);
+            var dpr = win.devicePixelRatio || 1;
+            dpr = 2;
+            if (!isIos && !(matches && matches[1] > 534) && !isUCHd) {
+                // 如果非iOS, 非Android4.3以上, 非UC内核, 就不执行高清, dpr设为1;
+                dpr = 1;
+            }
+            var scale = 1 / dpr;
 
-    .swipe {
-        overflow: hidden;
-        visibility: hidden;
-        position: relative;
-    }
-    .swipe-wrap {
-        overflow: hidden;
-        position: relative;
-    }
-    .swipe-wrap > div {
-        float: left;
-        width: 100%;
-        position: relative;
-    }
-    .am-navbar-left-icon {
-         margin-right: 0rem !important;
-    }
+            var metaEl = doc.querySelector('meta[name="viewport"]');
+            if (!metaEl) {
+                metaEl = doc.createElement('meta');
+                metaEl.setAttribute('name', 'viewport');
+                doc.head.appendChild(metaEl);
+            }
+            metaEl.setAttribute('content', 'width=device-width,user-scalable=no,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale);
+            doc.documentElement.style.fontSize = _baseFontSize / 2 * dpr * _fontscale + 'px';
+        })();
+        if (!window.Promise) {
+            document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"' + '>' + '<' + '/' + 'script>');
+        }
+        // Enable Google Analytics
+        if (!location.port) {
+            /* eslint-disable */
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r;
+                i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+                a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+                a.async = 1;
+                a.src = g;
+                m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-72788897-2', 'auto');
+            ga('send', 'pageview');
+            /* eslint-enable */
+        }
+    </script>
+    <title>微信商城</title>
+    <link rel="stylesheet" href="index.css"/>
+    <style>
+        #root {
+            margin: 0 auto;
+            /*min-width: 640px;*/
+            /*max-width: 1280px;*/
+        }
 
-    .result .icon {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-  </style>
+        .am-navbar {
+            /*border-bottom: 1PX solid #ddd;*/
+            height: 0.99rem;
+        }
+
+        .am-tab-bar-bar {
+            /*min-width: 320px;*/
+            /*max-width: 640px;*/
+        }
+
+        .home .am-list-extra {
+            flex-basis: 0% !important;
+        }
+
+        .course .am-list-extra {
+            color: #000000 !important;
+            flex-basis: 80% !important;
+        }
+
+        .content .am-list-extra {
+            flex-basis: 0% !important;
+        }
+
+        .swipe {
+            overflow: hidden;
+            visibility: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .swipe-wrap > div {
+            float: left;
+            width: 100%;
+            position: relative;
+        }
+
+        .am-navbar-left-icon {
+            margin-right: 0rem !important;
+        }
+
+        .result .icon {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+    </style>
 </head>
 <body>
 
@@ -66,3 +124,20 @@
 
 </body>
 </html>
+<script>
+    if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+
+    }
+    else {
+        document.getElementById("root").style.maxWidth = "640px";
+
+        let elements = document.getElementsByTagName("*");
+        console.log(elements.length);
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].getAttribute("class") == 'am-tab-bar-bar') {
+                elements[i].style.maxWidth = "640px";
+            }
+        }
+    }
+
+</script>

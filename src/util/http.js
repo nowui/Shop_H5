@@ -54,8 +54,10 @@ export default function http(config) {
                     }
 
                     config.complete();
-                })
+                });
+                console.log("222");
             }).catch(function (error) {
+                console.log("333");
                 Toast.fail(constant.error, constant.duration);
 
                 setTimeout(function () {

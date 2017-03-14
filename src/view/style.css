@@ -254,6 +254,7 @@
     line-height: 80px;
     text-align: center;
     color: #108EE6;
+    border-bottom: 1px solid #dddddd;
 }
 
 .categoryLeftItemActive {
