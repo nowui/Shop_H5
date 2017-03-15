@@ -93,7 +93,7 @@ class Mine extends Component {
                     </List>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item extra="查看全部订单" arrow="horizontal"
+                        <Item thumb={require('../assets/image/form.png')} extra="查看全部订单" arrow="horizontal"
                               onClick={this.handleOrder.bind(this)}>
                             我的订单
                         </Item>
