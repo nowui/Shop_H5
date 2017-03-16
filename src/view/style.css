@@ -59,10 +59,13 @@
 }
 
 .productCardName {
-
+    padding-left: 20px;
+    margin-bottom: 10px;
 }
 
 .productCardPrice {
+    padding-left: 20px;
+    margin-bottom: 10px;
     font-size: .3rem;
     font-weight: 700;
     color: red;
@@ -190,9 +193,6 @@
     height: 120px;
     margin-top: 20px;
     margin-bottom: 20px;
-    background-image: url("../assets/image/avatar.png");
-    background-repeat: no-repeat;
-    background-size: contain;
 }
 
 .name {
@@ -242,7 +242,7 @@
     position: fixed;
     top: 0;
     bottom: 0;
-    width: 200px;
+    width: 220px;
     height: 100%;
     padding-top: 0.99rem;
     padding-bottom: 0.99rem;
@@ -250,8 +250,8 @@
 }
 
 .categoryLeftItem {
-    height: 80px;
-    line-height: 80px;
+    height: 120px;
+    line-height: 120px;
     text-align: center;
     color: #108EE6;
     border-bottom: 1px solid #dddddd;
@@ -263,11 +263,10 @@
 
 .categoryPage {
     position: absolute;
-    min-width: 440px;
-    max-width: 1080px;
-    padding-left: 200px;
+    max-width: 1280px;
+    padding-left: 220px;
     padding-top: 0.99rem;
-    padding-bottom: 0.99rem;
+    padding-bottom: 1.10rem;
     background-color: #f5f5f9;
 }
 

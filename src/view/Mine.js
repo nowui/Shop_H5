@@ -27,6 +27,14 @@ class Mine extends Component {
 
     }
 
+    handleMine() {
+        if (database.getToken() == '') {
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+        } else {
+
+        }
+    }
+
     handleOrder() {
         if (database.getToken() == '') {
             Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
@@ -75,17 +83,24 @@ class Mine extends Component {
                 <div className={style.page}>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item>
-                            <div className={style.avatar}></div>
+                        <Item onClick={this.handleMine.bind(this)} arrow="horizontal">
                             {
                                 this.state.is_login ?
-                                    <div className={style.name}>袁科</div>
+                                    <div className={style.avatar}>
+                                        <img src={database.getUserAvatar()} style={{width: '120px', height: '120px'}}/>
+                                    </div>
+                                    :
+                                    '请登录平台'
+                            }
+                            {
+                                this.state.is_login ?
+                                    <div className={style.name}>{database.getUserName()}</div>
                                     :
                                     ''
                             }
                             {
                                 this.state.is_login ?
-                                    <div className={style.clazz}>13560044643</div>
+                                    <div className={style.clazz}></div>
                                     :
                                     ''
                             }
@@ -123,15 +138,15 @@ class Mine extends Component {
                             收货地址
                         </Item>
                     </List>
-                    {
-                        this.state.is_login ?
-                            <div style={{margin: '50px 10px 0px 10px'}}>
-                                <Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}
-                                        onClick={this.handleLogout.bind(this)}>退出系统</Button>
-                            </div>
-                            :
-                            ''
-                    }
+                    {/*{*/}
+                        {/*this.state.is_login ?*/}
+                            {/*<div style={{margin: '50px 10px 0px 10px'}}>*/}
+                                {/*<Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}*/}
+                                        {/*onClick={this.handleLogout.bind(this)}>退出系统</Button>*/}
+                            {/*</div>*/}
+                            {/*:*/}
+                            {/*''*/}
+                    {/*}*/}
                 </div>
             </div>
         );

@@ -42,6 +42,8 @@ class Login extends Component {
 
                         database.setToken(json.data.token);
                         database.setDelivery(json.data.delivery);
+                        database.setUserName(json.data.user_name);
+                        database.setUserAvatar(json.data.user_avatar);
 
                         setTimeout(function () {
                             this.props.handleLoginSucess();
@@ -73,7 +75,7 @@ class Login extends Component {
                                         required: true,
                                         message: '请输入帐号'
                                     }],
-                                    initialValue: '13560044643'
+                                    initialValue: ''
                                 })}
                                 error={!!getFieldError('user_phone')}
                                 clear
@@ -85,7 +87,7 @@ class Login extends Component {
                                         required: true,
                                         message: '请输入密码'
                                     }],
-                                    initialValue: '123456'
+                                    initialValue: ''
                                 })}
                                 error={!!getFieldError('user_password')}
                                 clear

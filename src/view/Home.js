@@ -5,6 +5,7 @@ import {routerRedux} from 'dva/router';
 import {NavBar, List} from 'antd-mobile';
 
 import constant from '../util/constant';
+import wechat from '../util/wechat';
 import http from '../util/http';
 
 import style from './style.css';
@@ -22,6 +23,8 @@ class Home extends Component {
         } else {
             document.body.scrollTop = this.props.home.scroll_top;
         }
+
+        wechat.auth();
     }
 
     componentWillUnmount() {

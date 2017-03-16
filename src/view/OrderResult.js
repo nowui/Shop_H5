@@ -27,7 +27,7 @@ class OrderResult extends Component {
 
     handleSubmit() {
         this.props.dispatch(routerRedux.push({
-            pathname: '/home',
+            pathname: '/category',
             query: {}
         }));
     }

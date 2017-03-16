@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Router, Route, IndexRedirect} from 'dva/router';
 
+import Auth from './view/Auth';
 import Main from './view/Main';
 import Home from './view/Home';
 import Category from './view/Category';
@@ -21,15 +22,26 @@ import database from './util/database';
 export default function ({history}) {
 
     const validate = function (next, replace, callback) {
-        // if ((database.getToken() == '' || database.getToken() == null) && next.location.pathname != '/login' && next.location.pathname == '/mine') {
-        //     replace('/login');
-        // }
-
         // if (next.location.pathname == '/mine' || next.location.pathname == '/cart') {
         //     if ((database.getToken() == '' || database.getToken() == null)) {
         //             replace('/login');
         //         }
         // }
+
+        if (next.location.pathname.indexOf('/auth/') == 0) {
+            let wechat_open_id = next.params.wechat_open_id;
+
+            if (wechat_open_id != database.getWeChatOpenId()) {
+                database.setWeChatOpenId(next.params.wechat_open_id);
+
+                database.removeToken();
+                database.removeDelivery();
+                database.removeProduct();
+                database.removeCart();
+            }
+
+            replace('/category');
+        }
 
         callback();
     };
@@ -37,7 +49,8 @@ export default function ({history}) {
     return (
         <Router history={history}>
             <Route path="/" onEnter={validate}>
-                <IndexRedirect to="home"/>
+                <IndexRedirect to="category"/>
+                <Route path="auth/:wechat_open_id" component={Auth}/>
                 <Route path="login" component={Login}/>
                 <Route path="register" component={Register}/>
                 <Route component={Main}>

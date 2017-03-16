@@ -5,7 +5,7 @@ import {routerRedux} from 'dva/router';
 import {NavBar} from 'antd-mobile';
 
 import constant from '../util/constant';
-import database from '../util/database';
+import wechat from '../util/wechat';
 import http from '../util/http';
 
 import style from './style.css';
@@ -23,6 +23,8 @@ class Category extends Component {
         if (this.props.category.list.length == 0) {
             this.handleLoad();
         }
+
+        wechat.auth();
     }
 
     componentWillUnmount() {
@@ -72,7 +74,7 @@ class Category extends Component {
     render() {
         return (
             <div>
-                <NavBar className={style.header} mode="dark" iconName={false}>商品分类</NavBar>
+                <NavBar className={style.header} mode="dark" iconName={false}>商品列表</NavBar>
                 <div className={style.categoryPage}>
                     {
                         this.props.category.product.map(function (item) {

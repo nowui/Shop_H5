@@ -65,7 +65,7 @@ class DeliveryDetail extends Component {
 
                         setTimeout(function () {
                             this.handleBack();
-                        }.bind(this), constant.timeout * 300);
+                        }.bind(this), constant.timeout);
                     }.bind(this),
                     complete: function () {
 
@@ -109,7 +109,7 @@ class DeliveryDetail extends Component {
 
                         setTimeout(function () {
                             this.handleBack();
-                        }.bind(this), constant.timeout * 300);
+                        }.bind(this), constant.timeout);
                     }.bind(this),
                     complete: function () {
 
