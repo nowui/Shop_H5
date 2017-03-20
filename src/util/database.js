@@ -23,6 +23,9 @@ const database = {
 
         localStorage.setItem(wechat_open_id_key, wechat_open_id);
     },
+    removeWeChatOpenId() {
+        localStorage.removeItem(wechat_open_id_key);
+    },
     getUserName() {
         let user_name = localStorage.getItem(user_name_key);
 
@@ -31,6 +34,9 @@ const database = {
         }
 
         return user_name;
+    },
+    removeWeChatOpenId() {
+        localStorage.removeItem(wechat_open_id_key);
     },
     setUserAvatar(user_avatar) {
         localStorage.removeItem(user_avatar_key);

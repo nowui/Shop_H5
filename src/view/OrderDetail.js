@@ -43,7 +43,10 @@ class OrderDetail extends Component {
     }
 
     handleBack() {
-        this.props.dispatch(routerRedux.goBack());
+        this.props.dispatch(routerRedux.push({
+            pathname: '/order/index/',
+            query: {}
+        }));
     }
 
     render() {

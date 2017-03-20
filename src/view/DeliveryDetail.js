@@ -46,7 +46,10 @@ class DeliveryDetail extends Component {
     }
 
     handleBack() {
-        this.props.dispatch(routerRedux.goBack());
+        this.props.dispatch(routerRedux.push({
+            pathname: '/delivery/index/',
+            query: {}
+        }));
     }
 
     handleDelete() {

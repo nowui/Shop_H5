@@ -60,7 +60,10 @@ class ProductDetail extends Component {
     }
 
     handleBack() {
-        this.props.dispatch(routerRedux.goBack());
+        this.props.dispatch(routerRedux.push({
+            pathname: '/category/',
+            query: {}
+        }));
     }
 
     handleChange(product_number) {

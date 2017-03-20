@@ -8,6 +8,7 @@ import Login from './Login';
 
 import constant from '../util/constant';
 import database from '../util/database';
+import wechat from '../util/wechat';
 import style from './style.css';
 
 class Mine extends Component {
@@ -58,6 +59,7 @@ class Mine extends Component {
     }
 
     handleLogout() {
+        database.removeWeChatOpenId();
         database.removeToken();
         database.removeDelivery();
 
@@ -87,7 +89,7 @@ class Mine extends Component {
                             {
                                 this.state.is_login ?
                                     <div className={style.avatar}>
-                                        <img src={database.getUserAvatar()} style={{width: '120px', height: '120px'}}/>
+                                        <img src={database.getUserAvatar()} style={{width: '100%', height: '100%'}}/>
                                     </div>
                                     :
                                     '请登录平台'
@@ -138,15 +140,15 @@ class Mine extends Component {
                             收货地址
                         </Item>
                     </List>
-                    {/*{*/}
-                        {/*this.state.is_login ?*/}
-                            {/*<div style={{margin: '50px 10px 0px 10px'}}>*/}
-                                {/*<Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}*/}
-                                        {/*onClick={this.handleLogout.bind(this)}>退出系统</Button>*/}
-                            {/*</div>*/}
-                            {/*:*/}
-                            {/*''*/}
-                    {/*}*/}
+                    {
+                        this.state.is_login ?
+                            <div style={{margin: '50px 10px 0px 10px'}}>
+                                <Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}
+                                        onClick={this.handleLogout.bind(this)}>退出系统</Button>
+                            </div>
+                            :
+                            ''
+                    }
                 </div>
             </div>
         );

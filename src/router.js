@@ -28,20 +28,20 @@ export default function ({history}) {
         //         }
         // }
 
-        if (next.location.pathname.indexOf('/auth/') == 0) {
-            let wechat_open_id = next.params.wechat_open_id;
+        {/*if (next.location.pathname.indexOf('/auth/') == 0) {*/}
+            {/*let wechat_open_id = next.params.wechat_open_id;*/}
 
-            if (wechat_open_id != database.getWeChatOpenId()) {
-                database.setWeChatOpenId(next.params.wechat_open_id);
-
-                database.removeToken();
-                database.removeDelivery();
-                database.removeProduct();
-                database.removeCart();
-            }
-
-            replace('/category');
-        }
+        //     if (wechat_open_id != database.getWeChatOpenId()) {
+        //         database.setWeChatOpenId(next.params.wechat_open_id);
+        //
+        //         database.removeToken();
+        //         database.removeDelivery();
+        //         database.removeProduct();
+        //         database.removeCart();
+        //     }
+        //
+        //     replace('/category');
+        // }
 
         callback();
     };

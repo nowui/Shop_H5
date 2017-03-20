@@ -58,7 +58,10 @@ class OrderCheck extends Component {
 
     handleDelivery() {
         if (database.getToken() == '') {
-            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {
+                animationType: 'slide-up',
+                maskClosable: false
+            });
         } else {
             this.props.dispatch(routerRedux.push({
                 pathname: '/delivery/index',
@@ -69,7 +72,10 @@ class OrderCheck extends Component {
 
     handleSubmit() {
         if (database.getToken() == '') {
-            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
+            Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {
+                animationType: 'slide-up',
+                maskClosable: false
+            });
 
             return;
         }
@@ -102,17 +108,46 @@ class OrderCheck extends Component {
                 product_list: product_list
             },
             success: function (json) {
-                database.setProduct([]);
-
-                this.props.dispatch(routerRedux.push({
-                    pathname: '/order/result/' + json.data,
-                    query: {}
-                }));
+                if (typeof WeixinJSBridge == "undefined") {
+                    if (document.addEventListener) {
+                        document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this), false);
+                    } else if (document.attachEvent) {
+                        document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this));
+                        document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this));
+                    }
+                } else {
+                    this.onBridgeReady(json.data).bind(this);
+                }
             }.bind(this),
             complete: function () {
 
             }.bind(this)
         }).post();
+    }
+
+    onBridgeReady(data) {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+                "appId": data.appId,
+                "timeStamp": data.timeStamp,
+                "nonceStr": data.nonceStr,
+                "package": data.package,
+                "signType": data.signType,
+                "paySign": data.paySign
+            },
+            function (res) {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {
+                    database.setProduct([]);
+
+                    this.props.dispatch(routerRedux.push({
+                        pathname: '/order/result/' + json.data,
+                        query: {}
+                    }));
+                } else {
+
+                }
+            }.bind(this)
+        );
     }
 
     render() {
@@ -133,7 +168,8 @@ class OrderCheck extends Component {
                                     :
                                     <div>
                                         <div>{this.state.delivery.delivery_name} {this.state.delivery.delivery_phone}</div>
-                                        <div className={style.deliveryAddress}>{this.state.delivery.delivery_address}</div>
+                                        <div
+                                            className={style.deliveryAddress}>{this.state.delivery.delivery_address}</div>
                                     </div>
                             }
                         </Item>
@@ -147,7 +183,7 @@ class OrderCheck extends Component {
                                         <img className={style.productListImage}
                                              src={constant.host + item.product_image}/>
                                         <div className={style.productListText}>
-                                             {item.product_name}
+                                            {item.product_name}
                                             <div>￥{item.product_price[0].product_price.toFixed(2)}</div>
                                         </div>
                                     </Item>
@@ -178,7 +214,8 @@ class OrderCheck extends Component {
                     </List>
                 </div>
                 <div className={style.footer}>
-                    <div className={style.checkTotal}><span className={style.checkTotalText}>实付总金额: ￥{this.state.allTotal.toFixed(2)}</span></div>
+                    <div className={style.checkTotal}><span
+                        className={style.checkTotalText}>实付总金额: ￥{this.state.allTotal.toFixed(2)}</span></div>
                     <div className={style.checkSubmit} onClick={this.handleSubmit.bind(this)}>提交订单</div>
                 </div>
             </div>
