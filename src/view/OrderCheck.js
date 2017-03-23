@@ -140,7 +140,7 @@ class OrderCheck extends Component {
                     database.setProduct([]);
 
                     this.props.dispatch(routerRedux.push({
-                        pathname: '/order/result/' + data.outTradeNo,
+                        pathname: '/order/result/' + data.orderId,
                         query: {}
                     }));
                 } else {

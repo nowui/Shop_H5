@@ -4,8 +4,7 @@ import {routerRedux} from 'dva/router';
 
 import {NavBar, Result, Icon, Button} from 'antd-mobile';
 
-import constant from '../util/constant';
-import database from '../util/database';
+import http from '../util/http';
 import style from './style.css';
 
 class OrderResult extends Component {
@@ -13,16 +12,34 @@ class OrderResult extends Component {
         super(props);
 
         this.state = {
-            is_pay: false
+            is_pay: false,
+            order: {}
         }
     }
 
     componentDidMount() {
-
+        this.handleLoad();
     }
 
     componentWillUnmount() {
 
+    }
+
+    handleLoad() {
+        http({
+            url: '/order/confirm',
+            data: {
+                order_id: this.props.params.order_id
+            },
+            success: function (json) {
+                this.setState({
+                    order: json.data
+                });
+            }.bind(this),
+            complete: function () {
+
+            }.bind(this)
+        }).post();
     }
 
     handleSubmit() {
@@ -56,8 +73,8 @@ class OrderResult extends Component {
                             <Result
                                 img={<Icon type={require('../assets/svg/waiting.svg')}
                                            style={{fill: '#1F90E6', width: '1.2rem', height: '1.2rem'}}/>}
-                                title="等待处理"
-                                message="已支付成功，等待平台处理"
+                                title="等待确认"
+                                message="已支付成功，等待平台确认"
                             />
                     }
                     {
