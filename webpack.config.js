@@ -51,10 +51,11 @@ module.exports = function (webpackConfig, env) {
     }));
 
     // for antd-mobile@1.0
-    const svgDirs = []; // 如果需要本地部署图标，需要在此加入本地图标路径
-    glob.sync('src/assets/svg', {dot: true}).forEach(p => {
-        svgDirs.push(new RegExp(p));
-    });
+    const path = require('path');
+    const svgDirs = [
+        require.resolve('antd-mobile').replace(/warn\.js$/, ''), // antd-mobile 内置svg
+        path.resolve(__dirname, 'src/assets/svg'),  // 业务代码本地私有 svg 存放目录
+    ];
     // exclude the default svg-url-loader from
     // atool-build https://github.com/ant-tool/atool-build/blob/e4bd2959689b6a95cb5c1c854a5db8c98676bdb3/src/getWebpackCommonConfig.js#L161
     webpackConfig.module.loaders.forEach(loader => {

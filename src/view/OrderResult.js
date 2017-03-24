@@ -4,6 +4,7 @@ import {routerRedux} from 'dva/router';
 
 import {NavBar, Result, Icon, Button} from 'antd-mobile';
 
+import constant from '../util/constant';
 import http from '../util/http';
 import style from './style.css';
 
@@ -12,6 +13,7 @@ class OrderResult extends Component {
         super(props);
 
         this.state = {
+            count: 0,
             is_pay: false,
             order: {}
         }
@@ -32,9 +34,23 @@ class OrderResult extends Component {
                 order_id: this.props.params.order_id
             },
             success: function (json) {
-                this.setState({
-                    order: json.data
-                });
+                if (json.data.order_is_pay) {
+                    this.setState({
+                        is_pay: true,
+                        order: json.data
+                    });
+                } else {
+                    if (this.state.count < 2) {
+                        this.setState({
+                            count: this.state.count + 1
+                        });
+
+                        setTimeout(function () {
+                            this.handleLoad();
+                        }.bind(this), 1500);
+                    }
+                }
+
             }.bind(this),
             complete: function () {
 
@@ -60,13 +76,15 @@ class OrderResult extends Component {
                             <Result
                                 img={<Icon type="check-circle"
                                            style={{fill: '#1F90E6', width: '1.2rem', height: '1.2rem'}}/>}
-                                title="支付成功"
+                                title="订单支付成功"
                                 message={<div>
                                     <div style={{
-                                        fontSize: '0.72rem',
+                                        fontSize: '0.73rem',
                                         color: '#000',
                                         lineHeight: 1
-                                    }}>{Number(this.props.params.price).toFixed(2)}</div>
+                                    }}>
+                                        <span style={{fontSize: '0.64rem'}}>￥</span>{Number(this.state.order.order_receive_amount).toFixed(2)}
+                                    </div>
                                 </div>}
                             />
                             :
@@ -77,14 +95,9 @@ class OrderResult extends Component {
                                 message="已支付成功，等待平台确认"
                             />
                     }
-                    {
-                        this.state.is_pay ?
-                            <div style={{margin: '50px 10px 0px 10px'}}>
-                                <Button type="primary" onClick={this.handleSubmit.bind(this)}>返回首页</Button>
-                            </div>
-                            :
-                            ''
-                    }
+                    <div style={{margin: '100px 10px 0px 10px'}}>
+                        <Button type="primary" onClick={this.handleSubmit.bind(this)}>返回首页</Button>
+                    </div>
                 </div>
             </div>
         );

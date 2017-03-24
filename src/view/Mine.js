@@ -140,15 +140,15 @@ class Mine extends Component {
                             收货地址
                         </Item>
                     </List>
-                    {
-                        this.state.is_login ?
-                            <div style={{margin: '50px 10px 0px 10px'}}>
-                                <Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}
-                                        onClick={this.handleLogout.bind(this)}>退出系统</Button>
-                            </div>
-                            :
-                            ''
-                    }
+                    {/*{*/}
+                        {/*this.state.is_login ?*/}
+                            {/*<div style={{margin: '100px 10px 0px 10px'}}>*/}
+                                {/*<Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}*/}
+                                        {/*onClick={this.handleLogout.bind(this)}>退出系统</Button>*/}
+                            {/*</div>*/}
+                            {/*:*/}
+                            {/*''*/}
+                    {/*}*/}
                 </div>
             </div>
         );
