@@ -95,10 +95,11 @@ class OrderIndex extends Component {
                 }
 
                 return (
-                  <Item arrow="horizontal" extra={order_status} key={item.order_id}
+                  <Item wrap arrow="horizontal" key={item.order_id}
                         onClick={this.handleClick.bind(this, item.order_id)}>
                     <div>单号： {item.order_number}</div>
-                    <div>合计：￥{item.order_amount.toFixed(2)}</div>
+                    <div>姓名： {item.order_delivery_name}</div>
+                    <div>地址： <span className={style.deliveryAddress}>{item.order_delivery_address}</span></div>
                   </Item>
                 )
               }.bind(this))

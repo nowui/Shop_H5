@@ -118,8 +118,7 @@ class OrderDetail extends Component {
             <Item>
               <div>
                 <div>{this.state.order.order_delivery_name} {this.state.order.order_delivery_phone}</div>
-                <div
-                  className={style.deliveryAddress}>{this.state.order.order_delivery_address}</div>
+                <div className={style.deliveryAddress}>{this.state.order.order_delivery_address}</div>
               </div>
             </Item>
           </List>

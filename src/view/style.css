@@ -118,6 +118,10 @@
   background-color: #f23030;
 }
 
+.cartIcon {
+  width: 50px;
+}
+
 .productIcon {
   width: 50px;
   margin-top: 5px;

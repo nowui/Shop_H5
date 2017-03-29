@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {NavBar, List, Popup} from 'antd-mobile';
+import {NavBar, List, Popup, Icon} from 'antd-mobile';
 import {Swipe, SwipeItem} from 'swipejs/react';
 
 import constant from '../util/constant';
@@ -129,6 +129,7 @@ class ProductDetail extends Component {
       <div>
         <NavBar className={style.header} mode="dark" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
+                rightContent={[<img key={1} className={style.cartIcon} src={require('../assets/svg/cart_white.svg')}/>]}
         >商品详情</NavBar>
         <div className={style.page}>
           {
