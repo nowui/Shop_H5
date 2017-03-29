@@ -44,6 +44,9 @@ const wechat = {
             return unescape(r[2]);
         }
         return '';
+    },
+    pay() {
+
     }
 };
 

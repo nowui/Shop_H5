@@ -2,7 +2,8 @@ import './index.html';
 import './index.css';
 import dva from 'dva';
 
-import 'react-fastclick';
+var FastClick = require('fastclick');
+FastClick.attach(document.body, {});
 
 // 1. Initialize
 const app = dva({});

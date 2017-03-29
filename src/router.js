@@ -1,4 +1,4 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
 import {Router, Route, IndexRedirect} from 'dva/router';
 
 import Auth from './view/Auth';
@@ -21,53 +21,40 @@ import database from './util/database';
 
 export default function ({history}) {
 
-    const validate = function (next, replace, callback) {
-        // if (next.location.pathname == '/mine' || next.location.pathname == '/cart') {
-        //     if ((database.getToken() == '' || database.getToken() == null)) {
-        //             replace('/login');
-        //         }
-        // }
+  const handleEnter = function (next, replace, callback) {
+    // database.setBackUrl(next.location.pathname);
 
-        {/*if (next.location.pathname.indexOf('/auth/') == 0) {*/}
-            {/*let wechat_open_id = next.params.wechat_open_id;*/}
+    callback();
+  };
 
-        //     if (wechat_open_id != database.getWeChatOpenId()) {
-        //         database.setWeChatOpenId(next.params.wechat_open_id);
-        //
-        //         database.removeToken();
-        //         database.removeDelivery();
-        //         database.removeProduct();
-        //         database.removeCart();
-        //     }
-        //
-        //     replace('/category');
-        // }
+  const handleChange = function (next, replace, callback) {
+    // database.setBackUrl(next.location.pathname);
 
-        callback();
-    };
+    callback();
+  };
 
-    return (
-        <Router history={history}>
-            <Route path="/" onEnter={validate}>
-                <IndexRedirect to="category"/>
-                <Route path="auth/:wechat_open_id" component={Auth}/>
-                <Route path="login" component={Login}/>
-                <Route path="register" component={Register}/>
-                <Route component={Main}>
-                    <Route path="home" component={Home}/>
-                    <Route path="category" component={Category}/>
-                    <Route path="cart" component={Cart}/>
-                    <Route path="mine" component={Mine}/>
-                </Route>
-                <Route path="product/detail/:product_id" component={ProductDetail}/>
-                <Route path='order/index' component={OrderIndex}/>
-                <Route path='order/detail/:order_id' component={OrderDetail}/>
-                <Route path="order/check" component={OrderCheck}/>
-                <Route path="order/result/:order_id" component={OrderResult}/>
-                <Route path="delivery/index" component={DeliveryIndex}/>
-                <Route path="delivery/add" component={DeliveryDetail}/>
-                <Route path="delivery/edit/:delivery_id" component={DeliveryDetail}/>
-            </Route>
-        </Router>
-    );
+  return (
+    <Router history={history}>
+      <Route path="/" onEnter={handleEnter} onChange={handleChange}>
+        <IndexRedirect to="category"/>
+        <Route path="auth/:wechat_open_id" component={Auth}/>
+        <Route path="login" component={Login}/>
+        <Route path="register" component={Register}/>
+        <Route component={Main}>
+          <Route path="home" component={Home}/>
+          <Route path="category" component={Category}/>
+          <Route path="cart" component={Cart}/>
+          <Route path="mine" component={Mine}/>
+        </Route>
+        <Route path="product/detail/:product_id" component={ProductDetail}/>
+        <Route path='order/index' component={OrderIndex}/>
+        <Route path='order/detail/:order_id' component={OrderDetail}/>
+        <Route path="order/check/:type" component={OrderCheck}/>
+        <Route path="order/result/:type/:order_id" component={OrderResult}/>
+        <Route path="delivery/index/:type" component={DeliveryIndex}/>
+        <Route path="delivery/add/:type" component={DeliveryDetail}/>
+        <Route path="delivery/edit/:type/:delivery_id" component={DeliveryDetail}/>
+      </Route>
+    </Router>
+  );
 };

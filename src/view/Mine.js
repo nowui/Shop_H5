@@ -8,7 +8,6 @@ import Login from './Login';
 
 import constant from '../util/constant';
 import database from '../util/database';
-import wechat from '../util/wechat';
 import style from './style.css';
 
 class Mine extends Component {
@@ -52,7 +51,7 @@ class Mine extends Component {
             Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {animationType: 'slide-up', maskClosable: false});
         } else {
             this.props.dispatch(routerRedux.push({
-                pathname: '/delivery/index',
+                pathname: '/delivery/index/list',
                 query: {}
             }));
         }
@@ -110,32 +109,32 @@ class Mine extends Component {
                     </List>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item thumb={require('../assets/image/form.png')} extra="查看全部订单" arrow="horizontal"
+                        <Item thumb={require('../assets/svg/form.svg')} arrow="horizontal"
                               onClick={this.handleOrder.bind(this)}>
                             我的订单
                         </Item>
-                        <Item>
-                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
-                                <img src={require('../assets/image/pay.png')}/>
-                                <div className={style.mineOrderItemText}>代付款</div>
-                            </div>
-                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
-                                <img src={require('../assets/image/send.png')}/>
-                                <div className={style.mineOrderItemText}>代发货</div>
-                            </div>
-                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
-                                <img src={require('../assets/image/deliver.png')}/>
-                                <div className={style.mineOrderItemText}>代收货</div>
-                            </div>
-                            <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
-                                <img src={require('../assets/image/comment.png')}/>
-                                <div className={style.mineOrderItemText}>已完成</div>
-                            </div>
-                        </Item>
+                        {/*<Item>*/}
+                            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
+                                {/*<img src={require('../assets/svg/pay.svg')}/>*/}
+                                {/*<div className={style.mineOrderItemText}>已付款</div>*/}
+                            {/*</div>*/}
+                            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
+                                {/*<img src={require('../assets/svg/send.svg')}/>*/}
+                                {/*<div className={style.mineOrderItemText}>已发货</div>*/}
+                            {/*</div>*/}
+                            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
+                                {/*<img src={require('../assets/svg/deliver.svg')}/>*/}
+                                {/*<div className={style.mineOrderItemText}>已收货</div>*/}
+                            {/*</div>*/}
+                            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
+                                {/*<img src={require('../assets/svg/comment.svg')}/>*/}
+                                {/*<div className={style.mineOrderItemText}>已完成</div>*/}
+                            {/*</div>*/}
+                        {/*</Item>*/}
                     </List>
                     <WhiteSpace size="lg"/>
                     <List>
-                        <Item thumb={require('../assets/image/location.png')} arrow="horizontal"
+                        <Item thumb={require('../assets/svg/location.svg')} arrow="horizontal"
                               onClick={this.handleDelivery.bind(this)}>
                             收货地址
                         </Item>
