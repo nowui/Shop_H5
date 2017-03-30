@@ -28,6 +28,38 @@
   height: 1.3rem;
 }
 
+.cartItem {
+  height: 190px;
+}
+
+.cartProductListCheckbox {
+  position: absolute;
+  left: -0.3rem;
+  top: 45px;
+}
+
+.cartProductListImage {
+  position: absolute;
+  left: 0.7rem;
+  top: 20px;
+  width: 150px !important;
+  height: 150px !important;
+  border: #ddd 1px solid;
+}
+
+.cartProductListText {
+  position: absolute;
+  left: 250px;
+  top: 45px;
+}
+
+.cartProductListPrice {
+  position: absolute;
+  right: 0.3rem;
+  top: 70px;
+  color: #888;
+}
+
 .productListImage {
   width: 150px !important;
   height: 150px !important;
@@ -44,7 +76,7 @@
   float: left;
   display: block;
   width: 47%;
-  margin: 2% 0 0 2%;
+  margin: 10px 0 0 10px;
   background: #fff;
 }
 
@@ -203,8 +235,8 @@
 .avatar {
   width: 120px;
   height: 120px;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .name {
@@ -256,7 +288,7 @@
   position: fixed;
   top: 0;
   bottom: 0;
-  width: 160px;
+  width: 20%;
   height: 100%;
   padding-top: 100px;
   padding-bottom: 100px;
@@ -276,7 +308,7 @@
 }
 
 .categoryPage {
-  padding-left: 160px;
+  padding-left: 20%;
   padding-top: 100px;
   padding-bottom: 100px;
   background-color: #f5f5f9;

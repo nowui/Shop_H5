@@ -109,12 +109,41 @@ const database = {
     localStorage.removeItem(product_key);
   },
   getCart() {
-    return localStorage.getItem(cart_key);
+    let cart = localStorage.getItem(cart_key);
+
+    if (cart == null) {
+      return [];
+    }
+
+    return JSON.parse(cart);
   },
   setCart(cart) {
+    let cartList = this.getCart();
+    let isNotExit = true;
+
+    for (let i = 0; i < cartList.length; i++) {
+      let c = cartList[i];
+
+      if (cart.product_id == c.product_id) {
+        isNotExit = false;
+
+        c.product_name = cart.product_name;
+        c.product_image = cart.product_image;
+        c.product_price = cart.product_price;
+        c.product_quantity = cart.product_quantity + c.product_quantity;
+        c.sku_id = cart.sku_id;
+      }
+    }
+
+    if (isNotExit) {
+      cartList.push(cart);
+    }
+
+    console.log(cartList);
+
     localStorage.removeItem(cart_key);
 
-    localStorage.setItem(cart_key, cart);
+    localStorage.setItem(cart_key, JSON.stringify(cartList));
   },
   removeCart() {
     localStorage.removeItem(cart_key);

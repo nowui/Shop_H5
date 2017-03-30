@@ -70,7 +70,15 @@ class ProductDetail extends Component {
 
   handleSubmit() {
     if (this.state.is_cart) {
-
+      database.setCart({
+        product_id: this.state.product.product_id,
+        product_name: this.state.product.product_name,
+        product_image: this.state.product.product_image[0],
+        product_price: this.state.product.product_price,
+        product_quantity: this.state.product_quantity,
+        product_stock: this.state.product.product_stock,
+        sku_id: this.state.product.sku_id
+      });
     } else {
       database.setProduct([{
         product_id: this.state.product.product_id,
@@ -80,12 +88,19 @@ class ProductDetail extends Component {
         product_quantity: this.state.product_quantity,
         sku_id: this.state.product.sku_id
       }]);
+
+      setTimeout(function () {
+        this.props.dispatch(routerRedux.push({
+          pathname: '/order/check/product_' + this.props.params.product_id,
+          query: {}
+        }));
+      }.bind(this), 500);
     }
+  }
 
-    Popup.hide();
-
+  handleGo() {
     this.props.dispatch(routerRedux.push({
-      pathname: '/order/check/product_' + this.props.params.product_id,
+      pathname: '/cart',
       query: {}
     }));
   }
@@ -96,6 +111,13 @@ class ProductDetail extends Component {
     });
 
     this.handlePopup();
+  }
+
+  handleHome() {
+    this.props.dispatch(routerRedux.push({
+      pathname: '/category',
+      query: {}
+    }));
   }
 
   handleBuy() {
@@ -129,7 +151,7 @@ class ProductDetail extends Component {
       <div>
         <NavBar className={style.header} mode="dark" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
-                rightContent={[<img key={1} className={style.cartIcon} src={require('../assets/svg/cart_white.svg')}/>]}
+                rightContent={[<img key={1} className={style.cartIcon} src={require('../assets/svg/cart_white.svg')} onClick={this.handleGo.bind(this)}/>]}
         >商品详情</NavBar>
         <div className={style.page}>
           {
@@ -176,7 +198,7 @@ class ProductDetail extends Component {
           <div dangerouslySetInnerHTML={{__html: this.state.product.product_content}}></div>
         </div>
         <div className={style.footer}>
-          <div className={style.productHome}>
+          <div className={style.productHome} onClick={this.handleHome.bind(this)}>
             <img className={style.productIcon} src={require('../assets/svg/home.svg')}/>
             <div className={style.productFont}>首页</div>
           </div>

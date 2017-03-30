@@ -37,6 +37,7 @@ export default {
   popconfirm_cancel: '取消',
   required: '不能为空',
   placeholder: '请输入',
+  empty: '当前没有数据',
   platform: 'H5',
   version: '1.0.2',
   // host: 'http://localhost:8080'

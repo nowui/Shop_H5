@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {NavBar, WhiteSpace, List} from 'antd-mobile';
+import {NavBar, WhiteSpace, List, Result} from 'antd-mobile';
 
+import constant from '../util/constant';
 import http from '../util/http';
 
 import style from './style.css';
@@ -13,6 +14,7 @@ class OrderIndex extends Component {
     super(props);
 
     this.state = {
+      is_load: false,
       list: []
     }
   }
@@ -22,12 +24,7 @@ class OrderIndex extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch({
-      type: 'order/fetch',
-      data: {
-        scroll_top: document.body.scrollTop
-      }
-    });
+
   }
 
   handleLoad() {
@@ -43,7 +40,9 @@ class OrderIndex extends Component {
         });
       }.bind(this),
       complete: function () {
-        document.body.scrollTop = this.props.order.scroll_top;
+        this.setState({
+          is_load: true
+        });
       }.bind(this)
     }).post();
   }
@@ -103,6 +102,15 @@ class OrderIndex extends Component {
                   </Item>
                 )
               }.bind(this))
+            }
+            {
+              this.state.is_load && this.state.list.length == 0 ?
+                <Result
+                  img={<img src={require('../assets/svg/empty.svg')} style={{width: '1.2rem', height: '1.2rem'}}/>}
+                  message={constant.empty}
+                />
+                :
+                ''
             }
           </List>
         </div>

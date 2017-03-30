@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {NavBar, WhiteSpace, List, Checkbox} from 'antd-mobile';
+import {NavBar, WhiteSpace, List, Checkbox, Result} from 'antd-mobile';
 
+import constant from '../util/constant';
 import database from '../util/database';
 import http from '../util/http';
 import style from './style.css';
@@ -13,6 +14,7 @@ class DeliveryIndex extends Component {
     super(props);
 
     this.state = {
+      is_load: false,
       is_list: false,
       delivery_id: '',
     }
@@ -48,7 +50,9 @@ class DeliveryIndex extends Component {
         });
       }.bind(this),
       complete: function () {
-
+        this.setState({
+          is_load: true
+        });
       }.bind(this)
     }).post();
   }
@@ -130,6 +134,15 @@ class DeliveryIndex extends Component {
                     </CheckboxItem>
                 )
               }.bind(this))
+            }
+            {
+              this.state.is_load && this.props.delivery.list.length == 0 ?
+                <Result
+                  img={<img src={require('../assets/svg/empty.svg')} style={{width: '1.2rem', height: '1.2rem'}}/>}
+                  message={constant.empty}
+                />
+                :
+                ''
             }
           </List>
         </div>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {List, Popup, Stepper, InputItem} from 'antd-mobile';
+import {List, Popup, Stepper} from 'antd-mobile';
 
 import constant from '../util/constant';
 import style from './style.css';
@@ -21,8 +21,10 @@ class ProductPopup extends Component {
 
   }
 
-  handleClose() {
+  handleSubmit() {
     Popup.hide();
+
+    this.props.handleSubmit();
   }
 
   render() {
@@ -52,7 +54,7 @@ class ProductPopup extends Component {
             购买数量
           </List.Item>
         </List>
-        <div className={style.productPopupSubmit} onClick={this.props.handleSubmit}>确定</div>
+        <div className={style.productPopupSubmit} onClick={this.handleSubmit.bind(this)}>确定</div>
       </div>
     );
   }
