@@ -15,6 +15,8 @@ class Cart extends Component {
     this.state = {
       is_all: false,
       is_select: false,
+      is_edit: false,
+      cart_total: 0,
       cart_list: database.getCart()
     }
   }
@@ -27,42 +29,89 @@ class Cart extends Component {
 
   }
 
-  handleEdit() {
-
+  handleRight() {
+    this.setState({
+      is_edit: !this.state.is_edit
+    });
   }
 
   handleChangeItem(product) {
     let isAll = true;
+    let isSelect = false;
+    let cartTotal = 0;
     let cartList = this.state.cart_list;
 
     for(let i = 0; i < cartList.length; i++) {
       if (cartList[i].product_id == product.product_id) {
         cartList[i].is_check = !cartList[i].is_check;
+      }
 
-        if (!cartList[i].is_check) {
-          isAll = false;
-        }
+      if (cartList[i].is_check) {
+        isSelect = true;
+
+        cartTotal += cartList[i].product_quantity * cartList[i].product_price[0].product_price
+      } else {
+        isAll = false;
       }
     }
 
     this.setState({
       is_all: isAll,
+      is_select: isSelect,
+      cart_total: cartTotal,
       cart_list: cartList
     });
   }
 
   handleChangeAll() {
     let isAll = !this.state.is_all;
+    let isSelect = false;
+    let cartTotal = 0;
     let cartList = this.state.cart_list;
 
     for(let i = 0; i < cartList.length; i++) {
       cartList[i].is_check = isAll;
+
+      if (isAll) {
+        isSelect = true;
+
+        cartTotal += cartList[i].product_quantity * cartList[i].product_price[0].product_price
+      }
     }
 
     this.setState({
       is_all: isAll,
+      is_select: isSelect,
+      cart_total: cartTotal,
       cart_list: cartList
     });
+  }
+
+  handleDelete(index) {
+    let isAll = true;
+    let isSelect = false;
+    let cartTotal = 0;
+    let cartList = this.state.cart_list;
+
+    cartList.splice(index, 1);
+
+    for(let i = 0; i < cartList.length; i++) {
+      if (cartList[i].is_check) {
+        isSelect = true;
+
+        cartTotal += cartList[i].product_quantity * cartList[i].product_price[0].product_price
+      } else {
+        isAll = false;
+      }
+    }
+
+    this.setState({
+      is_all: isAll,
+      is_select: isSelect,
+      cart_total: cartTotal,
+      cart_list: cartList
+    });
+
   }
 
   render() {
@@ -72,14 +121,14 @@ class Cart extends Component {
     return (
       <div>
         <NavBar className={style.header} mode="dark" iconName={false}
-                rightContent={this.state.cart_list.length == 0 ? [] : [<div onClick={this.handleEdit.bind(this)} key='add'>编辑</div>]}>购物车</NavBar>
+                rightContent={this.state.cart_list.length == 0 ? [] : [<div onClick={this.handleRight.bind(this)} key='0'>{this.state.is_edit ? '完成' : '编辑'}</div>]}>购物车</NavBar>
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>
             {
               this.state.cart_list.map(function (item, index) {
                 return (
-                  <Item key={item.product_id + index}
+                  <Item key={item.product_id}
                         className={style.cartItem}>
                     <CheckboxItem checked={item.is_check} className={style.cartProductListCheckbox} activeStyle={{
                       backgroundColor: '#ffffff'
@@ -92,7 +141,12 @@ class Cart extends Component {
 
                       <div>× {item.product_quantity}</div>
                     </div>
-                    <div className={style.cartProductListPrice}>{'￥' + (item.product_quantity * item.product_price[0].product_price).toFixed(2)}</div>
+                    {
+                      this.state.is_edit ?
+                        <div className={style.cartProductListDelete} onClick={this.handleDelete.bind(this, index)}>删除</div>
+                        :
+                        <div className={style.cartProductListPrice}>{'￥' + (item.product_quantity * item.product_price[0].product_price).toFixed(2)}</div>
+                    }
                   </Item>
                 )
               }.bind(this))
@@ -119,8 +173,9 @@ class Cart extends Component {
                 }} className={style.CheckboxItem} onChange={this.handleChangeAll.bind(this)}>
                   全选
                 </CheckboxItem>
+                <div className={style.checkTotalCartText}>￥{this.state.cart_total.toFixed(2)}</div>
               </div>
-              <div className={style.productBuy}>提交订单</div>
+              <div className={style.productBuy} style={{backgroundColor: this.state.is_select ? '#f23030' : '#dddddd'}}>提交订单</div>
             </div>
         }
       </div>

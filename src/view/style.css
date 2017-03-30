@@ -60,6 +60,18 @@
   color: #888;
 }
 
+.cartProductListDelete {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 100px;
+  color: #ffffff;
+  line-height: 190px;
+  text-align: center;
+  background-color: #f23030;
+}
+
 .productListImage {
   width: 150px !important;
   height: 150px !important;
@@ -255,7 +267,10 @@
   height: 50px;
 }
 
-.CheckboxItem {}
+.CheckboxItem {
+  position: absolute;
+  top: 5px;
+}
 
 .checkTotal {
   float: left;
@@ -270,6 +285,13 @@
   line-height: 100px;
 }
 
+.checkTotalCartText {
+  text-align: right;
+  padding-right: 20px;
+  line-height: 100px;
+  color: #f23030;
+}
+
 .checkSubmit {
   float: left;
   width: 30%;
@@ -277,7 +299,6 @@
   color: #ffffff;
   line-height: 100px;
   text-align: center;
-  background-color: #f23030;
 }
 
 .deliveryAddress {
