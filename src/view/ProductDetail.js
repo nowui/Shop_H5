@@ -70,7 +70,7 @@ class ProductDetail extends Component {
 
   handleSubmit() {
     if (this.state.is_cart) {
-      database.setCart({
+      database.addCart({
         product_id: this.state.product.product_id,
         product_name: this.state.product.product_name,
         product_image: this.state.product.product_image[0],

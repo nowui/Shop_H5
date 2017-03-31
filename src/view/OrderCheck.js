@@ -55,6 +55,13 @@ class OrderCheck extends Component {
         query: {}
       }));
     }
+
+    if (this.props.params.type.indexOf('cart') > -1) {
+      this.props.dispatch(routerRedux.push({
+        pathname: '/cart',
+        query: {}
+      }));
+    }
   }
 
   handleLoginSucess() {

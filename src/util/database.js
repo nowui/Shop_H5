@@ -108,7 +108,7 @@ const database = {
   removeProduct() {
     localStorage.removeItem(product_key);
   },
-  getCart() {
+  getCartList() {
     let cart = localStorage.getItem(cart_key);
 
     if (cart == null) {
@@ -117,8 +117,13 @@ const database = {
 
     return JSON.parse(cart);
   },
-  setCart(cart) {
-    let cartList = this.getCart();
+  setCartList(cartList) {
+    localStorage.removeItem(cart_key);
+
+    localStorage.setItem(cart_key, JSON.stringify(cartList));
+  },
+  addCart(cart) {
+    let cartList = this.getCartList();
     let isNotExit = true;
 
     for (let i = 0; i < cartList.length; i++) {
