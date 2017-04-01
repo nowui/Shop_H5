@@ -106,6 +106,42 @@ class DeliveryDetail extends Component {
         values.delivery_city = values.delivery_province_city_area[1];
         values.delivery_area = values.delivery_province_city_area[2];
 
+        let province = '';
+        let city = '';
+        let area = '';
+        let cityList = [];
+        let areaList = [];
+
+        for (let i = 0; i < china.length; i++) {
+          if (china[i].value == values.delivery_province) {
+            province = china[i].label;
+
+            cityList = china[i].children;
+
+            break;
+          }
+        }
+
+        for (let i = 0; i < cityList.length; i++) {
+          if (cityList[i].value == values.delivery_city) {
+            city = cityList[i].label;
+
+            areaList = cityList[i].children;
+
+            break;
+          }
+        }
+
+        for (let i = 0; i < areaList.length; i++) {
+          if (areaList[i].value == values.delivery_area) {
+            area = areaList[i].label;
+
+            break;
+          }
+        }
+
+        values.delivery_address = province + city + area + values.delivery_street;
+
         let action = 'save';
         if (this.props.route.path.indexOf('/edit/') > -1) {
           action = 'update';
