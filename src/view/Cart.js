@@ -186,7 +186,7 @@ class Cart extends Component {
                           <div>
                             <Stepper
                               style={{width: '100%', minWidth: '2rem'}}
-                              showNumber
+                              showNumber={false}
                               max={item.product_stock}
                               min={1}
                               defaultValue={item.product_quantity}
