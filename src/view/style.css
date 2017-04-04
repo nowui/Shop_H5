@@ -212,11 +212,17 @@
 
 .productPopupQuantity {
   position: absolute;
-  right: 1.1rem;
+  left: 0.3rem;
+  right: 0.3rem;
   top: 231px;
   z-index: 999;
+  pointer-events: none;
+}
+
+.productPopupQuantityNumber {
+  float: right;
+  width: 36%;
   text-align: center;
-  width: 50px;
 }
 
 .productPopupSubmit {

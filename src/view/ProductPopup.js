@@ -9,7 +9,7 @@ class ProductPopup extends Component {
     super(props);
 
     this.state = {
-
+      product_quantity: this.props.product_quantity
     }
   }
 
@@ -19,6 +19,14 @@ class ProductPopup extends Component {
 
   componentWillUnmount() {
 
+  }
+
+  handleChange(product_quantity) {
+    this.setState({
+      product_quantity: product_quantity
+    });
+
+    this.props.handleChange(product_quantity);
   }
 
   handleSubmit() {
@@ -46,14 +54,17 @@ class ProductPopup extends Component {
               showNumber={false}
               max={this.props.product_stock}
               min={1}
-              defaultValue={this.props.product_quantity}
-              onChange={this.props.handleChange}
+              defaultValue={this.state.product_quantity}
+              onChange={this.handleChange.bind(this)}
               useTouch={!window.isPC}
             />}
           >
             购买数量
           </List.Item>
         </List>
+        <div className={style.productPopupQuantity}>
+          <div className={style.productPopupQuantityNumber}>{this.state.product_quantity}</div>
+        </div>
         <div className={style.productPopupSubmit} onClick={this.handleSubmit.bind(this)}>确定</div>
       </div>
     );
