@@ -16,6 +16,7 @@ import OrderCheck from './view/OrderCheck';
 import OrderResult from './view/OrderResult';
 import DeliveryIndex from './view/DeliveryIndex';
 import DeliveryDetail from './view/DeliveryDetail';
+import Qrcode from './view/Qrcode';
 
 import database from './util/database';
 
@@ -54,6 +55,7 @@ export default function ({history}) {
         <Route path="delivery/index/:type" component={DeliveryIndex}/>
         <Route path="delivery/add/:type" component={DeliveryDetail}/>
         <Route path="delivery/edit/:type/:delivery_id" component={DeliveryDetail}/>
+        <Route path="qrcode" component={Qrcode}/>
       </Route>
     </Router>
   );

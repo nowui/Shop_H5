@@ -39,7 +39,7 @@ export default {
   placeholder: '请输入',
   empty: '当前没有数据',
   platform: 'H5',
-  version: '1.0.2',
+  version: '1.0.0',
   // host: 'http://localhost:8080'
   host: 'http://api.jiyiguan.nowui.com'
 };

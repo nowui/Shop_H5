@@ -87,6 +87,7 @@ class Category extends Component {
               )
             }.bind(this))
           }
+          <div className={style.categoryPageFooter}></div>
         </div>
         <div className={style.categoryLeft}>
           {

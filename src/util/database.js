@@ -7,12 +7,14 @@ const token_key = 'token_' + constant.version;
 const delivery_key = 'delivery_' + constant.version;
 const product_key = 'product_' + constant.version;
 const cart_key = 'cart_' + constant.version;
+const member_level_key = 'member_level_' + constant.version;
+const scene_qrcode_key = 'scene_qrcode_' + constant.version;
 
 const database = {
   getWeChatOpenId() {
     let wechat_open_id = localStorage.getItem(wechat_open_id_key);
 
-    if (wechat_open_id == null) {
+    if (wechat_open_id == 'undefined') {
       wechat_open_id = '';
     }
 
@@ -29,7 +31,7 @@ const database = {
   getUserName() {
     let user_name = localStorage.getItem(user_name_key);
 
-    if (user_name == null) {
+    if (user_name == 'undefined') {
       user_name = '';
     }
 
@@ -46,7 +48,7 @@ const database = {
   getUserAvatar() {
     let user_avatar = localStorage.getItem(user_avatar_key);
 
-    if (user_avatar == null) {
+    if (user_avatar == 'undefined') {
       user_avatar = '';
     }
 
@@ -60,7 +62,7 @@ const database = {
   getToken() {
     let token = localStorage.getItem(token_key);
 
-    if (token == null) {
+    if (token == 'undefined') {
       token = '';
     }
 
@@ -77,7 +79,7 @@ const database = {
   getDelivery() {
     let delivery = localStorage.getItem(delivery_key);
 
-    if (delivery == null) {
+    if (delivery == 'undefined') {
       return {};
     }
 
@@ -94,7 +96,7 @@ const database = {
   getProduct() {
     let product = localStorage.getItem(product_key);
 
-    if (product == null) {
+    if (product == 'undefined') {
       return [];
     }
 
@@ -144,14 +146,53 @@ const database = {
       cartList.push(cart);
     }
 
-    console.log(cartList);
-
     localStorage.removeItem(cart_key);
 
     localStorage.setItem(cart_key, JSON.stringify(cartList));
   },
   removeCart() {
     localStorage.removeItem(cart_key);
+  },
+  getMemberLevel() {
+    let member_level = localStorage.getItem(member_level_key);
+
+    if (member_level == 'undefined') {
+      return {
+        member_level_id: '',
+        member_level_name: '',
+        member_level_value: -1
+      };
+    }
+
+    return JSON.parse(member_level);
+  },
+  setMemberLevel(member_level) {
+    localStorage.removeItem(member_level_key);
+
+    localStorage.setItem(member_level_key, JSON.stringify(member_level));
+  },
+  removeMemberLevel() {
+    localStorage.removeItem(member_level_key);
+  },
+  getSceneQrcode() {
+    let scene_qrcode = localStorage.getItem(scene_qrcode_key);
+
+    if (scene_qrcode == 'undefined') {
+      scene_qrcode = ''
+    }
+
+    return scene_qrcode;
+  },
+  setSceneQrcode(scene_qrcode) {
+    localStorage.removeItem(scene_qrcode_key);
+
+    localStorage.setItem(scene_qrcode_key, scene_qrcode);
+  },
+  removeSceneQrcode() {
+    localStorage.removeItem(scene_qrcode_key);
+  },
+  removeAll() {
+    localStorage.clear();
   }
 };
 

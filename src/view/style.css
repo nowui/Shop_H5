@@ -88,7 +88,7 @@
   float: left;
   display: block;
   width: 47%;
-  margin: 10px 0 0 10px;
+  margin: 2% 0 0 2%;
   background: #fff;
 }
 
@@ -259,7 +259,7 @@
 
 .name {
   position: absolute;
-  top: 50px;
+  top: 60px;
   left: 140px;
   width: 120px;
   height: 50px;
@@ -340,6 +340,12 @@
   padding-top: 100px;
   padding-bottom: 100px;
   background-color: #f5f5f9;
+}
+
+.categoryPageFooter {
+  float: left;
+  width: 90%;
+  height: 110px;
 }
 
 .mineOrderItem {
