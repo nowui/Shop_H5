@@ -41,5 +41,6 @@ export default {
   platform: 'H5',
   version: '1.0.0',
   // host: 'http://localhost:8080'
-  host: 'http://api.jiyiguan.nowui.com'
+  // host: 'http://api.jiyiguan.nowui.com'
+  host: 'http://api.xingxiao.nowui.com'
 };
