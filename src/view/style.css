@@ -90,6 +90,7 @@
   width: 47%;
   margin: 2% 0 0 2%;
   background: #fff;
+  border: #ddd 1px solid;
 }
 
 .productCardImage {
@@ -99,12 +100,14 @@
 .productCardName {
   padding-left: 20px;
   margin-bottom: 10px;
+  font-size: 24px;
 }
 
 .productCardPrice {
   padding-left: 20px;
   margin-bottom: 10px;
   font-weight: 700;
+  font-size: 24px;
   color: red;
 }
 
@@ -321,9 +324,12 @@
   padding-top: 100px;
   padding-bottom: 100px;
   background-color: #ffffff;
+  font-size: 24px;
+  border-right: #ddd 1px solid;
 }
 
 .categoryLeftItem {
+  width: 100%;
   height: 120px;
   line-height: 120px;
   text-align: center;
@@ -333,6 +339,8 @@
 
 .categoryLeftItemActive {
   background-color: #f5f5f9;
+  width: 100%;
+  border-right: #f5f5f9 1px solid;
 }
 
 .categoryPage {

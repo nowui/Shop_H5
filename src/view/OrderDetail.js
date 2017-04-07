@@ -60,7 +60,8 @@ class OrderDetail extends Component {
     http({
       url: '/order/pay',
       data: {
-        order_id: this.props.params.order_id
+        order_id: this.props.params.order_id,
+        open_id: database.getWeChatOpenId()
       },
       success: function (json) {
         if (typeof WeixinJSBridge == "undefined") {

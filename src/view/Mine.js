@@ -34,7 +34,7 @@ class Mine extends Component {
         maskClosable: false
       });
     } else {
-      if (database.getMemberLevel().member_level_value == 1) {
+      if (database.getMemberLevel().member_level_value < 3) {
         this.props.dispatch(routerRedux.push({
           pathname: '/qrcode',
           query: {}
@@ -98,7 +98,7 @@ class Mine extends Component {
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>
-            <Item onClick={this.handleMine.bind(this)} arrow={database.getMemberLevel().member_level_value == 1 ? 'horizontal' : ''}>
+            <Item onClick={this.handleMine.bind(this)} arrow={database.getMemberLevel().member_level_value < 3 ? 'horizontal' : ''}>
               {
                 this.state.is_login ?
                   <div className={style.avatar}>

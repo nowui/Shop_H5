@@ -43,7 +43,7 @@ class ProductDetail extends Component {
         product_id: this.props.params.product_id
       },
       success: function (json) {
-        json.data.product_image_list = JSON.parse(json.data.product_image_list);
+        json.data.product_image_list = JSON.parse(json.data.product_image_list_original);
         json.data.product_image = JSON.parse(json.data.product_image);
         json.data.product_price = JSON.parse(json.data.sku_list[0].product_price);
         json.data.product_stock = json.data.sku_list[0].product_stock;
@@ -194,7 +194,6 @@ class ProductDetail extends Component {
               }
             </Item>
           </List>
-
           <div dangerouslySetInnerHTML={{__html: this.state.product.product_content}}></div>
         </div>
         <div className={style.footer}>

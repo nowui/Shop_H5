@@ -13,12 +13,12 @@ class Qrcode extends Component {
     super(props);
 
     this.state = {
-      qrcode: database.getSceneQrcode()
+      qrcode: ''
     }
   }
 
   componentDidMount() {
-    if (this.state.qrcode == '') {
+    if (database.getMemberLevel().member_level_value < 3) {
       this.handleLoad();
     }
   }
@@ -30,9 +30,7 @@ class Qrcode extends Component {
   handleLoad() {
     http({
       url: '/member/qrcode/find',
-      data: {
-
-      },
+      data: {},
       success: function (json) {
         database.setSceneQrcode(json.data);
 

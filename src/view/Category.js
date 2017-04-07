@@ -34,10 +34,6 @@ class Category extends Component {
       url: '/product/all/list',
       data: {},
       success: function (json) {
-        // for (let i = 0; i < json.data.length; i++) {
-        //     json.data[i].product_image = JSON.parse(json.data[i].product_image);
-        // }
-
         this.props.dispatch({
           type: 'category/fetch',
           data: {

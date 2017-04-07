@@ -14,7 +14,7 @@ const database = {
   getWeChatOpenId() {
     let wechat_open_id = localStorage.getItem(wechat_open_id_key);
 
-    if (wechat_open_id == 'undefined') {
+    if (wechat_open_id == null) {
       wechat_open_id = '';
     }
 
@@ -31,7 +31,7 @@ const database = {
   getUserName() {
     let user_name = localStorage.getItem(user_name_key);
 
-    if (user_name == 'undefined') {
+    if (user_name == null) {
       user_name = '';
     }
 
@@ -48,7 +48,7 @@ const database = {
   getUserAvatar() {
     let user_avatar = localStorage.getItem(user_avatar_key);
 
-    if (user_avatar == 'undefined') {
+    if (user_avatar == null) {
       user_avatar = '';
     }
 
@@ -62,7 +62,7 @@ const database = {
   getToken() {
     let token = localStorage.getItem(token_key);
 
-    if (token == 'undefined') {
+    if (token == null) {
       token = '';
     }
 
@@ -79,7 +79,7 @@ const database = {
   getDelivery() {
     let delivery = localStorage.getItem(delivery_key);
 
-    if (delivery == 'undefined') {
+    if (delivery == null) {
       return {};
     }
 
@@ -96,7 +96,7 @@ const database = {
   getProduct() {
     let product = localStorage.getItem(product_key);
 
-    if (product == 'undefined') {
+    if (product == null) {
       return [];
     }
 
@@ -156,7 +156,7 @@ const database = {
   getMemberLevel() {
     let member_level = localStorage.getItem(member_level_key);
 
-    if (member_level == 'undefined') {
+    if (member_level == null) {
       return {
         member_level_id: '',
         member_level_name: '',
@@ -177,7 +177,7 @@ const database = {
   getSceneQrcode() {
     let scene_qrcode = localStorage.getItem(scene_qrcode_key);
 
-    if (scene_qrcode == 'undefined') {
+    if (scene_qrcode == null) {
       scene_qrcode = ''
     }
 
