@@ -74,9 +74,9 @@ class Category extends Component {
             this.props.category.product.map(function (item) {
               return (
                 <div className={style.productCard} key={item.product_id}
-                     onClick={this.handleProduct.bind(this, item.product_id)}>
-                  <img className={style.productCardImage}
-                       src={constant.host + JSON.parse(item.product_image)[0]}/>
+                     onClick={this.handleProduct.bind(this, item.product_id)} style={{backgroundImage: 'url(' + constant.host + JSON.parse(item.product_image)[0] + ')'}}>
+                  {/*<img className={style.productCardImage}*/}
+                  {/*src={constant.host + JSON.parse(item.product_image)[0]}/>*/}
                   <div className={style.productCardName}>{item.product_name}</div>
                   <div className={style.productCardPrice}>¥{item.product_price}</div>
                 </div>

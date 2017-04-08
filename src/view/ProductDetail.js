@@ -33,7 +33,9 @@ class ProductDetail extends Component {
   }
 
   componentWillUnmount() {
-    this.refs.swipe.instance.stop();
+    if (this.state.product.product_image_list.length > 0) {
+      this.refs.swipe.instance.stop();
+    }
   }
 
   handleLoad() {
