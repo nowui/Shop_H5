@@ -102,6 +102,8 @@ class Cart extends Component {
       }
     }
 
+    database.setCartList(cartList);
+
     this.setState({
       cart_total: cartTotal,
       cart_list: cartList
@@ -125,6 +127,8 @@ class Cart extends Component {
         isAll = false;
       }
     }
+
+    database.setCartList(cartList);
 
     this.setState({
       is_all: isAll,
@@ -185,7 +189,7 @@ class Cart extends Component {
                         this.state.is_edit ?
                           <div>
                             <Stepper
-                              style={{width: '100%', minWidth: '2rem'}}
+                              style={{width: '220px'}}
                               showNumber={false}
                               max={item.product_stock}
                               min={1}
@@ -193,6 +197,9 @@ class Cart extends Component {
                               onChange={this.handleChangeStepper.bind(this, item.product_id)}
                               useTouch={!window.isPC}
                             />
+                            <div className={style.cartProductListQuantity}>
+                              <div className={style.cartProductListQuantityNumber}>{item.product_quantity}</div>
+                            </div>
                           </div>
                           :
                           <div>× {item.product_quantity}</div>

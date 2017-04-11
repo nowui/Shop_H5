@@ -43,8 +43,9 @@ class ProductPopup extends Component {
             <img className={style.productCardImage} src={constant.host + this.props.product_image}/>
           </div>
           <div className={style.productPopupText}>
-        <span
-          className={style.productPopupRedText}>￥{this.props.product_price}</span>
+            <span>{this.props.product_name}</span>
+            <br/>
+            <span className={style.productPopupRedText}>￥{this.props.product_price}</span>
           </div>
         </div>
         <List className={style.productPopupContent}>
@@ -72,6 +73,7 @@ class ProductPopup extends Component {
 }
 
 ProductPopup.propTypes = {
+  product_name: React.PropTypes.string.isRequired,
   product_image: React.PropTypes.string.isRequired,
   product_price: React.PropTypes.number.isRequired,
   product_quantity: React.PropTypes.number.isRequired,

@@ -138,6 +138,7 @@ class ProductDetail extends Component {
 
   handlePopup() {
     Popup.show(<ProductPopup
+      product_name={this.state.product.product_name}
       product_image={this.state.product.product_image[0]}
       product_price={this.state.product.product_price[this.state.product.product_price.length - 1].product_price}
       product_quantity={this.state.product_quantity}
