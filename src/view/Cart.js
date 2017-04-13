@@ -130,6 +130,8 @@ class Cart extends Component {
 
     database.setCartList(cartList);
 
+    this.props.handlCart();
+
     this.setState({
       is_all: isAll,
       is_select: isSelect,

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {NavBar, List, Popup, Icon} from 'antd-mobile';
+import {NavBar, List, Popup, Badge} from 'antd-mobile';
 import {Swipe, SwipeItem} from 'swipejs/react';
 
 import constant from '../util/constant';
@@ -18,6 +18,7 @@ class ProductDetail extends Component {
 
     this.state = {
       is_cart: true,
+      cart_count: database.getCartList().length,
       product_quantity: 1,
       product: {
         product_image: [],
@@ -80,6 +81,10 @@ class ProductDetail extends Component {
         product_quantity: this.state.product_quantity,
         product_stock: this.state.product.product_stock,
         sku_id: this.state.product.sku_id
+      });
+
+      this.setState({
+        cart_count: database.getCartList().length
       });
     } else {
       database.setProduct([{
@@ -154,7 +159,7 @@ class ProductDetail extends Component {
       <div>
         <NavBar className={style.header} mode="dark" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
-                rightContent={[<img key={1} className={style.cartIcon} src={require('../assets/svg/cart_white.svg')} onClick={this.handleGo.bind(this)}/>]}
+                rightContent={[<Badge key={1} text={this.state.cart_count} onClick={this.handleGo.bind(this)}><img className={style.cartIcon} src={require('../assets/svg/cart_white.svg')} onClick={this.handleGo.bind(this)}/></Badge>]}
         >商品详情</NavBar>
         <div className={style.page}>
           {

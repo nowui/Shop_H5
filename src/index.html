@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>上海星销</title>
+  <title>济颐馆</title>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
   <meta name="format-detection" content="telephone=no"/>
@@ -39,10 +39,10 @@
     }]);
     flex(100, 1);
   </script>
-  <link rel="stylesheet" href="index.css"/>
   <style>
     #root {
       margin: 0 auto;
+      background: #ffffff;
     }
 
     .swipe {
@@ -75,13 +75,78 @@
     .am-navbar-left-icon {
       margin-right: -16px !important;
     }
+
+    #loading {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      background: #ffffff;
+    }
+
+    .progress {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -12px;
+      margin-left: -100px;
+      width: 200px;
+      height: 25px;
+      background: #a72025;
+      padding: 5px;
+      overflow: visible;
+      border-radius: 20px;
+    }
+
+    .progress .progress-bar {
+      border-radius: 20px;
+      position: relative;
+    }
+
+    .progress-bar-info {
+      width: 0%;
+      height: 24px;
+      background-color: #ffffff;
+    }
   </style>
 </head>
 <body>
 
 <div id="root"></div>
 
-<script src="index.js"></script>
+<div id="loading">
+  <div class="progress">
+    <div id="progressBar" class="progress-bar progress-bar-info"></div>
+  </div>
+</div>
 
 </body>
 </html>
+<script src="preloadjs-0.6.2.min.js"></script>
+<script type="text/javascript">
+  var manifest = [{
+    src: "index.css",
+    id: "index.css"
+  }, {
+    src: "index.js",
+    id: "index.js"
+  }];
+
+  var preload = new createjs.LoadQueue();
+  preload.loadManifest(manifest);
+  preload.on('progress', handleProgress);
+  preload.on('complete', handComplete);
+
+  function handleProgress(event) {
+    var progressBar = document.getElementById("progressBar");
+    if (progressBar != null) {
+      document.getElementById("progressBar").style.width = preload.progress * 100 + "%";
+    }
+  }
+
+  function handComplete() {
+
+  }
+</script>
+

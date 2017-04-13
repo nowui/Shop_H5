@@ -18,18 +18,12 @@ export default {
   'proxy': null,
   'extraBabelPlugins': [
     'transform-runtime',
-    ['import', { 'libraryName': 'antd-mobile', 'style': 'css' }]
+    ['import', { 'libraryName': 'antd-mobile', 'style': true }]
   ],
   'env': {
     'development': {
       'extraBabelPlugins': [
         'dva-hmr'
-      ],
-      'extraPostCSSPlugins': [
-        pxtorem({
-          'rootValue': 100,
-          'propWhiteList': [],
-        }),
       ]
     }
   }

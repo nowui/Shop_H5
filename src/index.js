@@ -21,5 +21,7 @@ app.model(require('./model/delivery'));
 // 4. Router
 app.router(require('./router'));
 
+document.getElementById("loading").remove();
+
 // 5. Start
 app.start('#root');

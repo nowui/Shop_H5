@@ -4,12 +4,15 @@ import {routerRedux} from 'dva/router';
 
 import {TabBar} from 'antd-mobile';
 
+import database from '../util/database';
+
 class Main extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedTab: this.props.routes[2].path
+      selectedTab: this.props.routes[2].path,
+      cart_count: database.getCartList().length
     }
   }
 
@@ -32,12 +35,24 @@ class Main extends Component {
     }));
   }
 
+  handlCart() {
+    this.setState({
+      cart_count: database.getCartList().length
+    });
+  }
+
   render() {
+    const childrenWithProps = React.Children.map(this.props.children,
+      (child) => React.cloneElement(child, {
+        handlCart: this.handlCart.bind(this)
+      })
+    );
+
     return (
       <div>
         <TabBar
           unselectedTintColor="#949494"
-          tintColor="#33A3F4"
+          tintColor="#a72025"
           barTintColor="white"
           hidden={this.state.hidden}
         >
@@ -62,6 +77,7 @@ class Main extends Component {
           <TabBar.Item
             title="购物车"
             key="cart"
+            badge={this.state.cart_count}
             icon={require('../assets/svg/cart.svg')}
             selectedIcon={require('../assets/svg/cart_active.svg')}
             selected={this.state.selectedTab === 'cart'}
@@ -78,7 +94,7 @@ class Main extends Component {
           >
           </TabBar.Item>
         </TabBar>
-        {this.props.children}
+        {childrenWithProps}
       </div>
     );
   }
