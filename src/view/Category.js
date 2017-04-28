@@ -115,8 +115,8 @@ class Category extends Component {
   render() {
     return (
       <div>
-        <NavBar className={style.header} mode="dark" leftContent="返回"
-                onLeftClick={this.handleBack.bind(this)}>商品列表</NavBar>
+        <NavBar className={style.header} mode="light" leftContent="返回"
+                onLeftClick={this.handleBack.bind(this)}>商品分类</NavBar>
         <div className={style.categoryPage}>
           {
             this.state.product_list.map(function (item) {

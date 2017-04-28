@@ -81,7 +81,7 @@ class OrderResult extends Component {
 
     return (
       <div className="result">
-        <NavBar className={style.header} mode="dark" iconName={false}>交易反馈</NavBar>
+        <NavBar className={style.header} mode="light" iconName={false}>交易反馈</NavBar>
         <div className={style.page}>
           {
             this.state.result == 'confirm' ?

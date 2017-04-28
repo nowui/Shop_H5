@@ -178,7 +178,7 @@ class OrderCheck extends Component {
 
     return (
       <div>
-        <NavBar className={style.header} mode="dark" leftContent="返回"
+        <NavBar className={style.header} mode="light" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}>填写订单</NavBar>
         <div className={style.page}>
           <WhiteSpace size="lg"/>

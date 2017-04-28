@@ -48,11 +48,9 @@ class Home extends Component {
 
   handleLoad() {
     http({
-      url: '/product/list',
+      url: '/product/hot/list',
       data: {
-        product_name: '',
-        page_index: 1,
-        page_size: 20
+
       },
       success: function (json) {
         for (let i = 0; i < json.data.length; i++) {
@@ -89,7 +87,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        <NavBar className={style.header} mode="dark" iconName={false}>商品列表</NavBar>
+        <NavBar className={style.header} mode="light" iconName={false}>商城首页</NavBar>
         <div className={style.page}>
           <Carousel autoplay={true} infinite={true}>
             <img

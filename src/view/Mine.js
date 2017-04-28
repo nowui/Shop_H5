@@ -109,7 +109,7 @@ class Mine extends Component {
 
     return (
       <div>
-        <NavBar className={style.header} mode="dark" iconName={false}>个人中心</NavBar>
+        <NavBar className={style.header} mode="light" iconName={false}>个人中心</NavBar>
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>

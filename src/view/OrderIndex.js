@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {NavBar, WhiteSpace, List, Result} from 'antd-mobile';
+import {NavBar, WhiteSpace, List, Result, Tabs} from 'antd-mobile';
 
 import constant from '../util/constant';
 import http from '../util/http';
@@ -63,13 +63,25 @@ class OrderIndex extends Component {
 
   render() {
     const Item = List.Item;
+    const TabPane = Tabs.TabPane;
 
     return (
       <div>
-        <NavBar className={style.header} mode="dark" leftContent="返回"
+        <NavBar className={style.header} mode="light" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}>我的订单</NavBar>
         <div className={style.page}>
-          <WhiteSpace size="lg"/>
+          <Tabs defaultActiveKey="0" animated={false}>
+            <TabPane tab="全部订单" key="0">
+            </TabPane>
+            <TabPane tab="代付款" key="1">
+            </TabPane>
+            <TabPane tab="代发货" key="2">
+            </TabPane>
+            <TabPane tab="代收货" key="3">
+            </TabPane>
+            <TabPane tab="已完成" key="4">
+            </TabPane>
+          </Tabs>
           <List>
             {
               this.state.list.map(function (item) {

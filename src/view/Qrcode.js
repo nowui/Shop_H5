@@ -54,7 +54,7 @@ class Qrcode extends Component {
   render() {
     return (
       <div>
-        <NavBar className={style.header} mode="dark" leftContent="返回"
+        <NavBar className={style.header} mode="light" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}>我的二维码</NavBar>
         <div className={style.page}>
           {

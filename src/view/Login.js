@@ -62,7 +62,7 @@ class Login extends Component {
 
     return (
       <div>
-        <NavBar className={style.header} mode="dark" iconName={false}
+        <NavBar className={style.header} mode="light" iconName={false}
                 rightContent={[<div onClick={this.handleClose.bind(this)} key='close'>关闭</div>]}>用户登录</NavBar>
         <div className={style.login}>
           <form style={{margin: '50px 10px 0px 10px'}}>

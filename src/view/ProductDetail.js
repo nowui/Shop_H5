@@ -170,7 +170,7 @@ class ProductDetail extends Component {
 
     return (
       <div>
-        <NavBar className={style.header} mode="dark" leftContent="返回"
+        <NavBar className={style.header} mode="light" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
                 rightContent={[<Badge key={1} text={this.state.cart_count} onClick={this.handleGo.bind(this)}><img
                   className={style.cartIcon} src={require('../assets/svg/cart_white.svg')}

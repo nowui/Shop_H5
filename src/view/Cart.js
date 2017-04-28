@@ -168,7 +168,7 @@ class Cart extends Component {
 
     return (
       <div>
-        <NavBar className={style.header} mode="dark" iconName={false}
+        <NavBar className={style.header} mode="light" iconName={false}
                 rightContent={this.state.cart_list.length == 0 ? [] : [<div onClick={this.handleRight.bind(this)}
                                                                             key='0'>{this.state.is_edit ? '完成' : '编辑'}</div>]}>购物车</NavBar>
         <div className={style.page}>
