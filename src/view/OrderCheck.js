@@ -50,8 +50,11 @@ class OrderCheck extends Component {
 
   handleBack() {
     if (this.props.params.type.indexOf('product_') > -1) {
+      let url = this.props.params.type.replace('product_detail_', 'product/detail/');
+      let index = url.lastIndexOf('_');
+
       this.props.dispatch(routerRedux.push({
-        pathname: '/' + this.props.params.type.replace('_', '/detail/'),
+        pathname: '/' + url.substring(0, index) + '/' + url.substring(index + 1, url.length),
         query: {}
       }));
     }
@@ -120,7 +123,8 @@ class OrderCheck extends Component {
         order_message: this.props.form.getFieldValue('order_message'),
         order_pay_type: 'WECHAT_PAY',
         product_list: product_list,
-        open_id: database.getWeChatOpenId()
+        open_id: database.getWeChatOpenId(),
+        pay_type: 'H5'
       },
       success: function (json) {
         if (typeof WeixinJSBridge == "undefined") {

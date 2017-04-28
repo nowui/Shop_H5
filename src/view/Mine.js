@@ -8,6 +8,7 @@ import Login from './Login';
 
 import constant from '../util/constant';
 import database from '../util/database';
+
 import style from './style.css';
 
 class Mine extends Component {
@@ -71,6 +72,20 @@ class Mine extends Component {
     }
   }
 
+  handleFavor() {
+    if (database.getToken() == '') {
+      Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {
+        animationType: 'slide-up',
+        maskClosable: false
+      });
+    } else {
+      this.props.dispatch(routerRedux.push({
+        pathname: '/favor/index',
+        query: {}
+      }));
+    }
+  }
+
   handleLogout() {
     database.removeWeChatOpenId();
     database.removeToken();
@@ -98,7 +113,8 @@ class Mine extends Component {
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>
-            <Item onClick={this.handleMine.bind(this)} arrow={database.getMemberLevel().member_level_value < 3 ? 'horizontal' : ''}>
+            <Item onClick={this.handleMine.bind(this)} extra="二维码"
+                  arrow={database.getMemberLevel().member_level_value < 3 ? 'horizontal' : ''}>
               {
                 this.state.is_login ?
                   <div className={style.avatar}>
@@ -123,34 +139,38 @@ class Mine extends Component {
           </List>
           <WhiteSpace size="lg"/>
           <List>
-            <Item thumb={require('../assets/svg/form.svg')} arrow="horizontal"
+            <Item extra="查看全部订单" arrow="horizontal"
                   onClick={this.handleOrder.bind(this)}>
               我的订单
             </Item>
-            {/*<Item>*/}
-            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
-            {/*<img src={require('../assets/svg/pay.svg')}/>*/}
-            {/*<div className={style.mineOrderItemText}>已付款</div>*/}
-            {/*</div>*/}
-            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
-            {/*<img src={require('../assets/svg/send.svg')}/>*/}
-            {/*<div className={style.mineOrderItemText}>已发货</div>*/}
-            {/*</div>*/}
-            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
-            {/*<img src={require('../assets/svg/deliver.svg')}/>*/}
-            {/*<div className={style.mineOrderItemText}>已收货</div>*/}
-            {/*</div>*/}
-            {/*<div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>*/}
-            {/*<img src={require('../assets/svg/comment.svg')}/>*/}
-            {/*<div className={style.mineOrderItemText}>已完成</div>*/}
-            {/*</div>*/}
-            {/*</Item>*/}
+            <Item>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                <img src={require('../assets/svg/pay.svg')}/>
+                <div className={style.mineOrderItemText}>待付款</div>
+              </div>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                <img src={require('../assets/svg/send.svg')}/>
+                <div className={style.mineOrderItemText}>待发货</div>
+              </div>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                <img src={require('../assets/svg/deliver.svg')}/>
+                <div className={style.mineOrderItemText}>待收货</div>
+              </div>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+                <img src={require('../assets/svg/comment.svg')}/>
+                <div className={style.mineOrderItemText}>已完成</div>
+              </div>
+            </Item>
           </List>
           <WhiteSpace size="lg"/>
           <List>
             <Item thumb={require('../assets/svg/location.svg')} arrow="horizontal"
                   onClick={this.handleDelivery.bind(this)}>
-              收货地址
+              我的地址
+            </Item>
+            <Item thumb={require('../assets/svg/favor_active.svg')} arrow="horizontal"
+                  onClick={this.handleFavor.bind(this)}>
+              我的收藏
             </Item>
           </List>
           {/*{*/}

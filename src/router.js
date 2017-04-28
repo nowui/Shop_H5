@@ -16,20 +16,19 @@ import OrderCheck from './view/OrderCheck';
 import OrderResult from './view/OrderResult';
 import DeliveryIndex from './view/DeliveryIndex';
 import DeliveryDetail from './view/DeliveryDetail';
+import FavorIndex from './view/FavorIndex';
 import Qrcode from './view/Qrcode';
-
-import database from './util/database';
 
 export default function ({history}) {
 
   const handleEnter = function (next, replace, callback) {
-    // database.setBackUrl(next.location.pathname);
+
 
     callback();
   };
 
   const handleChange = function (next, replace, callback) {
-    // database.setBackUrl(next.location.pathname);
+
 
     callback();
   };
@@ -37,17 +36,17 @@ export default function ({history}) {
   return (
     <Router history={history}>
       <Route path="/" onEnter={handleEnter} onChange={handleChange}>
-        <IndexRedirect to="category"/>
+        <IndexRedirect to="home"/>
         <Route path="auth/:wechat_open_id" component={Auth}/>
         <Route path="login" component={Login}/>
         <Route path="register" component={Register}/>
         <Route component={Main}>
           <Route path="home" component={Home}/>
-          <Route path="category" component={Category}/>
           <Route path="cart" component={Cart}/>
           <Route path="mine" component={Mine}/>
         </Route>
-        <Route path="product/detail/:product_id" component={ProductDetail}/>
+        <Route path="category/:category_id" component={Category}/>
+        <Route path="product/detail/:type/:product_id" component={ProductDetail}/>
         <Route path='order/index' component={OrderIndex}/>
         <Route path='order/detail/:order_id' component={OrderDetail}/>
         <Route path="order/check/:type" component={OrderCheck}/>
@@ -55,6 +54,7 @@ export default function ({history}) {
         <Route path="delivery/index/:type" component={DeliveryIndex}/>
         <Route path="delivery/add/:type" component={DeliveryDetail}/>
         <Route path="delivery/edit/:type/:delivery_id" component={DeliveryDetail}/>
+        <Route path="favor/index" component={FavorIndex}/>
         <Route path="qrcode" component={Qrcode}/>
       </Route>
     </Router>

@@ -23,5 +23,9 @@ app.router(require('./router'));
 
 document.getElementById("loading").remove();
 
+String.prototype.replaceAll = function (s1, s2) {
+  return this.replace(new RegExp(s1, "gm"), s2);
+}
+
 // 5. Start
 app.start('#root');

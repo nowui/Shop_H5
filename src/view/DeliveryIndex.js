@@ -108,7 +108,7 @@ class DeliveryIndex extends Component {
       <div>
         <NavBar className={style.header} mode="dark" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
-                rightContent={[<div onClick={this.handleAdd.bind(this)} key='add'>新增</div>]}>快递地址</NavBar>
+                rightContent={[<div onClick={this.handleAdd.bind(this)} key='add'>新增</div>]}>我的地址</NavBar>
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>

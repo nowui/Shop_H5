@@ -23,7 +23,7 @@ class DeliveryDetail extends Component {
     if (this.props.route.path.indexOf('/edit/') > -1) {
       this.handleLoad();
     } else {
-      this.props.form.setFieldsValue({delivery_is_default: true})
+
     }
   }
 
@@ -180,7 +180,7 @@ class DeliveryDetail extends Component {
       <div>
         <NavBar className={style.header} mode="dark" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
-                rightContent={rightContent}>快递地址</NavBar>
+                rightContent={rightContent}>我的地址</NavBar>
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>

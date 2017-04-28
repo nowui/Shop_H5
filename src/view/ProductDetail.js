@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
-import {NavBar, List, Popup, Badge} from 'antd-mobile';
-import {Swipe, SwipeItem} from 'swipejs/react';
+import {NavBar, Carousel, List, Toast, Badge, WhiteSpace, Stepper} from 'antd-mobile';
 
 import constant from '../util/constant';
 import database from '../util/database';
 import http from '../util/http';
-
-import ProductPopup from './ProductPopup';
 
 import style from './style.css';
 
@@ -34,9 +31,7 @@ class ProductDetail extends Component {
   }
 
   componentWillUnmount() {
-    if (this.state.product.product_image_list.length > 0) {
-      this.refs.swipe.instance.stop();
-    }
+
   }
 
   handleLoad() {
@@ -57,18 +52,25 @@ class ProductDetail extends Component {
         });
       }.bind(this),
       complete: function () {
-        // this.refs.swipe.instance.setup({
-        //     continuous: true
-        // });
+
       }.bind(this)
     }).post();
   }
 
   handleBack() {
-    this.props.dispatch(routerRedux.push({
-      pathname: '/category',
-      query: {}
-    }));
+    if (this.props.params.type == 'home') {
+      this.props.dispatch(routerRedux.push({
+        pathname: '/home',
+        query: {}
+      }));
+    }
+
+    if (this.props.params.type.indexOf('category_') > -1) {
+      this.props.dispatch(routerRedux.push({
+        pathname: this.props.params.type.replace('_', '/'),
+        query: {}
+      }));
+    }
   }
 
   handleSubmit() {
@@ -113,43 +115,54 @@ class ProductDetail extends Component {
   }
 
   handleCart() {
-    this.setState({
-      is_cart: true
+    database.addCart({
+      product_id: this.state.product.product_id,
+      product_name: this.state.product.product_name,
+      product_image: this.state.product.product_image[0],
+      product_price: this.state.product.product_price,
+      product_quantity: this.state.product_quantity,
+      product_stock: this.state.product.product_stock,
+      sku_id: this.state.product.sku_id
     });
 
-    this.handlePopup();
+    this.setState({
+      cart_count: database.getCartList().length
+    });
+
+    Toast.success('加入成功', constant.duration);
   }
 
   handleHome() {
     this.props.dispatch(routerRedux.push({
-      pathname: '/category',
+      pathname: '/home',
       query: {}
     }));
   }
 
-  handleBuy() {
-    this.setState({
-      is_cart: false
-    });
-
-    this.handlePopup();
+  handleFavor() {
+    Toast.success('收藏成功', constant.duration);
   }
 
-  handleChange(product_quantity) {
+  handleBuy() {
+    database.setProduct([{
+      product_id: this.state.product.product_id,
+      product_name: this.state.product.product_name,
+      product_image: this.state.product.product_image[0],
+      product_price: this.state.product.product_price,
+      product_quantity: this.state.product_quantity,
+      sku_id: this.state.product.sku_id
+    }]);
+
+    this.props.dispatch(routerRedux.push({
+      pathname: '/order/check/product_detail_' + this.props.params.type + '_' + this.props.params.product_id,
+      query: {}
+    }));
+  }
+
+  handleQuantity(product_quantity) {
     this.setState({
       product_quantity: product_quantity
     });
-  }
-
-  handlePopup() {
-    Popup.show(<ProductPopup
-      product_name={this.state.product.product_name}
-      product_image={this.state.product.product_image[0]}
-      product_price={this.state.product.product_price[this.state.product.product_price.length - 1].product_price}
-      product_quantity={this.state.product_quantity}
-      product_stock={this.state.product.product_stock}
-      handleChange={this.handleChange.bind(this)}
-      handleSubmit={this.handleSubmit.bind(this)}/>, {animationType: 'slide-up', maskClosable: true});
   }
 
   render() {
@@ -159,36 +172,25 @@ class ProductDetail extends Component {
       <div>
         <NavBar className={style.header} mode="dark" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
-                rightContent={[<Badge key={1} text={this.state.cart_count} onClick={this.handleGo.bind(this)}><img className={style.cartIcon} src={require('../assets/svg/cart_white.svg')} onClick={this.handleGo.bind(this)}/></Badge>]}
+                rightContent={[<Badge key={1} text={this.state.cart_count} onClick={this.handleGo.bind(this)}><img
+                  className={style.cartIcon} src={require('../assets/svg/cart_white.svg')}
+                  onClick={this.handleGo.bind(this)}/></Badge>]}
         >商品详情</NavBar>
         <div className={style.page}>
           {
             this.state.product.product_image_list.length == 0 ?
               ''
               :
-              <Swipe className=''
-                     ref='swipe'
-                     startSlide={0}
-                     speed={300}
-                     auto={3000}
-                     draggable={true}
-                     continuous={true}
-                     autoRestart={true}
-                     disableScroll={false}
-                     stopPropagation={false}>
+              <Carousel autoplay={false} infinite={false} style={{height: document.documentElement.clientWidth + 'px'}}>
                 {
                   this.state.product.product_image_list.map(function (item, index) {
                     return (
-                      <SwipeItem className={style.productImage} key={index}>
-                        <img className={style.productCardImage}
-                             src={constant.host + item}/>
-                      </SwipeItem>
+                      <img key={index} style={{width: document.documentElement.clientWidth + 'px', height: document.documentElement.clientWidth + 'px'}} src={constant.host + item}/>
                     )
                   }.bind(this))
                 }
-              </Swipe>
+              </Carousel>
           }
-
           <List>
             <Item>
               {this.state.product.product_name}
@@ -196,20 +198,39 @@ class ProductDetail extends Component {
               {
                 this.state.product.product_price.length > 0 ?
                   <span
-                    className={style.productPopupRedText}>￥{this.state.product.product_price[0].product_price}</span>
+                    className={style.productPopupRedText}>￥{this.state.product.product_price[0].product_price.toFixed(2)}</span>
                   :
                   ''
               }
             </Item>
           </List>
-          <div dangerouslySetInnerHTML={{__html: this.state.product.product_content}}></div>
+          <WhiteSpace size="lg"/>
+          <List>
+            <Item>
+              已选：{this.state.product_quantity} 个
+            </Item>
+            <Item>
+              <Stepper
+                style={{width: '200px', minWidth: '2rem'}}
+                showNumber={true}
+                max={99999}
+                min={1}
+                defaultValue={this.state.product_quantity}
+                onChange={this.handleQuantity.bind(this)}
+                useTouch={!window.isPC}
+              />
+            </Item>
+          </List>
+          <WhiteSpace size="lg"/>
+          <div className={style.productContent}
+               dangerouslySetInnerHTML={{__html: this.state.product.product_content}}></div>
         </div>
         <div className={style.footer}>
           <div className={style.productHome} onClick={this.handleHome.bind(this)}>
             <img className={style.productIcon} src={require('../assets/svg/home.svg')}/>
             <div className={style.productFont}>首页</div>
           </div>
-          <div className={style.productFavor}>
+          <div className={style.productFavor} onClick={this.handleFavor.bind(this)}>
             <img className={style.productIcon} src={require('../assets/svg/favor.svg')}/>
             <div className={style.productFont}>收藏</div>
           </div>

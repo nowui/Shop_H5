@@ -15,9 +15,7 @@ const wechat = {
     // }
 
 
-    if (wechat_open_id != '' && wechat_open_id != database.getWeChatOpenId()) {
-      database.removeAll();
-
+    if (wechat_open_id != '') {
       http({
         url: '/member/wechat/login',
         data: {

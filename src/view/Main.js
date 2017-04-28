@@ -57,12 +57,12 @@ class Main extends Component {
           hidden={this.state.hidden}
         >
           <TabBar.Item
-            title="商品"
-            key="category"
+            title="首页"
+            key="home"
             icon={require('../assets/svg/home.svg')}
             selectedIcon={require('../assets/svg/home_active.svg')}
-            selected={this.state.selectedTab === 'category'}
-            onPress={this.handlePress.bind(this, 'category')}
+            selected={this.state.selectedTab === 'home'}
+            onPress={this.handlePress.bind(this, 'home')}
           >
           </TabBar.Item>
           <TabBar.Item

@@ -2,18 +2,16 @@ import constant from '../util/constant';
 
 export default {
 
-    namespace: 'category',
+  namespace: 'category',
 
-    state: {
-        index: 0,
-        list: [],
-        product: []
-    },
+  state: {
+    product_list: []
+  },
 
-    reducers: {
-        fetch(state, action) {
-            return {...state, ...action.data};
-        }
+  reducers: {
+    fetch(state, action) {
+      return {...state, ...action.data};
     }
+  }
 
 };

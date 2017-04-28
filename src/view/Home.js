@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 
-import {NavBar, List} from 'antd-mobile';
+import {NavBar, Carousel} from 'antd-mobile';
 
 import constant from '../util/constant';
 import wechat from '../util/wechat';
@@ -14,7 +14,9 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {
+      category_list: []
+    }
   }
 
   componentDidMount() {
@@ -23,6 +25,14 @@ class Home extends Component {
     } else {
       document.body.scrollTop = this.props.home.scroll_top;
     }
+
+    let category_list = constant.category_list.concat();
+    category_list.splice(0, 1);
+    category_list.push(constant.category_list[0]);
+
+    this.setState({
+      category_list: category_list
+    });
 
     wechat.auth();
   }
@@ -42,11 +52,11 @@ class Home extends Component {
       data: {
         product_name: '',
         page_index: 1,
-        page_size: 10
+        page_size: 20
       },
       success: function (json) {
         for (let i = 0; i < json.data.length; i++) {
-          json.data[i].product_image = JSON.parse(json.data[i].product_image);
+          json.data[i].product_image_original = constant.host + JSON.parse(json.data[i].product_image_original);
         }
 
         this.props.dispatch({
@@ -62,34 +72,67 @@ class Home extends Component {
     }).post();
   }
 
-  handleClick(product_id) {
+  handleCategory(category_id) {
     this.props.dispatch(routerRedux.push({
-      pathname: '/product/detail/' + product_id,
+      pathname: '/category/' + category_id,
+      query: {}
+    }));
+  }
+
+  handleProduct(product_id) {
+    this.props.dispatch(routerRedux.push({
+      pathname: '/product/detail/home/' + product_id,
       query: {}
     }));
   }
 
   render() {
-    const Item = List.Item;
-
     return (
       <div>
         <NavBar className={style.header} mode="dark" iconName={false}>商品列表</NavBar>
         <div className={style.page}>
+          <Carousel autoplay={true} infinite={true}>
+            <img
+              src='http://api.jiyiguan.nowui.com/upload/6a4dbae2ac824d2fb170638d55139666/original/00b1216e83b84226978d63703e7d597b.jpg'/>
+            <img
+              src='http://api.jiyiguan.nowui.com/upload/6a4dbae2ac824d2fb170638d55139666/original/00b1216e83b84226978d63703e7d597b.jpg'/>
+            <img
+              src='http://api.jiyiguan.nowui.com/upload/6a4dbae2ac824d2fb170638d55139666/original/00b1216e83b84226978d63703e7d597b.jpg'/>
+          </Carousel>
+          <div className={style.homeCategory}>
+            {
+              this.state.category_list.map(function (item) {
+                return (
+                  <div className={style.homeCategoryItem} key={item.category_id} onClick={this.handleCategory.bind(this, item.category_id)}>
+                    <div className={style.homeCategoryItemIcon} style={{background: item.category_color}}>
+                      <img className={style.homeCategoryItemIconImage}
+                           src={require('../assets/svg/' + item.category_image)}/>
+                    </div>
+                    {item.category_name}
+                  </div>
+                )
+              }.bind(this))
+            }
+          </div>
           {
             this.props.home.list.map(function (item) {
               return (
-                <div className={style.productCard} key={item.product_id}
-                     onClick={this.handleClick.bind(this, item.product_id)}>
-                  <img className={style.productCardImage}
-                       src={constant.host + item.product_image[0]}/>
+                <div className={style.productCard}
+                     style={{width: (document.documentElement.clientWidth - 25) / 2 + 'px', margin: '7px 0 0 7px'}}
+                     key={item.product_id}
+                     onClick={this.handleProduct.bind(this, item.product_id)}>
+                  <img style={{
+                    width: (document.documentElement.clientWidth - 25) / 2 + 'px',
+                    height: (document.documentElement.clientWidth - 25) / 2 + 'px'
+                  }}
+                       src={item.product_image_original}/>
                   <div className={style.productCardName}>{item.product_name}</div>
                   <div className={style.productCardPrice}>¥{item.product_price}</div>
                 </div>
               )
             }.bind(this))
           }
-          <div className={style.mainFooter}></div>
+          <div style={{float: 'left', width: '100%', height: '7px'}}></div>
         </div>
       </div>
     );

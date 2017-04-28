@@ -5,7 +5,6 @@ import {routerRedux} from 'dva/router';
 import {NavBar} from 'antd-mobile';
 
 import constant from '../util/constant';
-import wechat from '../util/wechat';
 import http from '../util/http';
 
 import style from './style.css';
@@ -14,15 +13,37 @@ class Category extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = {
+      category_id: '0',
+      category_list: [],
+      product_list: []
+    }
   }
 
   componentDidMount() {
-    if (this.props.category.list.length == 0) {
-      this.handleLoad();
+    let category_id = '0';
+    let category_list = constant.category_list.concat();
+    let product_list = [];
+
+    if (typeof(this.props.params.category_id) != 'undefined') {
+      category_id = this.props.params.category_id;
     }
 
-    wechat.auth();
+    if (this.props.category.product_list.length == 0) {
+      this.handleLoad();
+    } else {
+      for (let i = 0; i < this.props.category.product_list.length; i++) {
+        if (this.props.category.product_list[i].category_id == category_id || category_id == '0') {
+          product_list.push(this.props.category.product_list[i]);
+        }
+      }
+    }
+
+    this.setState({
+      category_id: this.props.params.category_id,
+      category_list: category_list,
+      product_list: product_list
+    });
   }
 
   componentWillUnmount() {
@@ -34,12 +55,27 @@ class Category extends Component {
       url: '/product/all/list',
       data: {},
       success: function (json) {
+        for (let i = 0; i < json.data.length; i++) {
+          json.data[i].product_image_original = constant.host + JSON.parse(json.data[i].product_image_original);
+        }
+
+        let product_list = [];
+
+        for (let i = 0; i < json.data.length; i++) {
+          if (json.data[i].category_id == this.state.category_id || this.state.category_id == '0') {
+            product_list.push(json.data[i]);
+          }
+        }
+
         this.props.dispatch({
           type: 'category/fetch',
           data: {
-            list: json.data,
-            product: json.data[this.props.category.index].children
+            product_list: json.data
           }
+        });
+
+        this.setState({
+          product_list: product_list
         });
       }.bind(this),
       complete: function () {
@@ -48,19 +84,30 @@ class Category extends Component {
     }).post();
   }
 
-  handleCategory(index) {
-    this.props.dispatch({
-      type: 'category/fetch',
-      data: {
-        index: index,
-        product: this.props.category.list[index].children
+  handleBack() {
+    this.props.dispatch(routerRedux.push({
+      pathname: '/home',
+      query: {}
+    }));
+  }
+
+  handleCategory(category_id) {
+    let product_list = [];
+    for (let i = 0; i < this.props.category.product_list.length; i++) {
+      if (this.props.category.product_list[i].category_id == category_id || category_id == '0') {
+        product_list.push(this.props.category.product_list[i]);
       }
+    }
+
+    this.setState({
+      category_id: category_id,
+      product_list: product_list
     });
   }
 
   handleProduct(product_id) {
     this.props.dispatch(routerRedux.push({
-      pathname: '/product/detail/' + product_id,
+      pathname: '/product/detail/category_' + this.state.category_id + '/' + product_id,
       query: {}
     }));
   }
@@ -68,31 +115,37 @@ class Category extends Component {
   render() {
     return (
       <div>
-        <NavBar className={style.header} mode="dark" iconName={false}>商品列表</NavBar>
+        <NavBar className={style.header} mode="dark" leftContent="返回"
+                onLeftClick={this.handleBack.bind(this)}>商品列表</NavBar>
         <div className={style.categoryPage}>
           {
-            this.props.category.product.map(function (item) {
+            this.state.product_list.map(function (item) {
               return (
-                <div className={style.productCard} key={item.product_id}
-                     onClick={this.handleProduct.bind(this, item.product_id)} style={{backgroundImage: 'url(' + constant.host + JSON.parse(item.product_image)[0] + ')'}}>
-                  {/*<img className={style.productCardImage}*/}
-                  {/*src={constant.host + JSON.parse(item.product_image)[0]}/>*/}
+                <div className={style.productCard}
+                     style={{width: (document.documentElement.clientWidth - 200 - 25) / 2 + 'px', margin: '7px 0 0 7px'}}
+                     key={item.product_id}
+                     onClick={this.handleProduct.bind(this, item.product_id)}>
+                  <img style={{
+                    width: (document.documentElement.clientWidth - 200 - 25) / 2 + 'px',
+                    height: (document.documentElement.clientWidth - 200 - 25) / 2 + 'px'
+                  }}
+                       src={item.product_image_original}/>
                   <div className={style.productCardName}>{item.product_name}</div>
                   <div className={style.productCardPrice}>¥{item.product_price}</div>
                 </div>
               )
             }.bind(this))
           }
-          <div className={style.categoryPageFooter}></div>
+          <div style={{float: 'left', width: '100%', height: '7px'}}></div>
         </div>
         <div className={style.categoryLeft}>
           {
-            this.props.category.list.map(function (item, index) {
-              const itemStyle = index == this.props.category.index ? style.categoryLeftItem + ' ' + style.categoryLeftItemActive : style.categoryLeftItem;
+            this.state.category_list.map(function (item) {
+              const itemStyle = item.category_id == this.state.category_id ? style.categoryLeftItem + ' ' + style.categoryLeftItemActive : style.categoryLeftItem;
 
               return (
                 <div className={itemStyle} key={item.category_id}
-                     onClick={this.handleCategory.bind(this, index)}>{item.category_name}</div>
+                     onClick={this.handleCategory.bind(this, item.category_id)}>{item.category_name}</div>
               )
             }.bind(this))
           }
