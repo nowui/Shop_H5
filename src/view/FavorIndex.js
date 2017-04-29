@@ -35,11 +35,11 @@ class FavorIndex extends Component {
         page_index: 1,
         page_size: 10
       },
-      success: function (json) {
+      success: function (data) {
         this.props.dispatch({
           type: 'favor/fetch',
           data: {
-            list: json.data
+            list: data
           }
         });
       }.bind(this),

@@ -30,12 +30,12 @@ class Register extends Component {
         http({
           url: '/member/login',
           data: values,
-          success: function (json) {
+          success: function (data) {
             Toast.success('登录成功', constant.duration);
 
-            database.setToken(json.data.token);
-            database.setName(json.data.student_name);
-            database.setClazz(json.data.clazz_name);
+            database.setToken(data.token);
+            database.setName(data.student_name);
+            database.setClazz(data.clazz_name);
 
             setTimeout(function () {
               this.props.dispatch(routerRedux.push({

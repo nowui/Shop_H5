@@ -54,23 +54,23 @@ class Category extends Component {
     http({
       url: '/product/all/list',
       data: {},
-      success: function (json) {
-        for (let i = 0; i < json.data.length; i++) {
-          json.data[i].product_image_original = constant.host + JSON.parse(json.data[i].product_image_original);
+      success: function (data) {
+        for (let i = 0; i < data.length; i++) {
+          data[i].product_image_original = constant.host + JSON.parse(data[i].product_image_original);
         }
 
         let product_list = [];
 
-        for (let i = 0; i < json.data.length; i++) {
-          if (json.data[i].category_id == this.state.category_id || this.state.category_id == '0') {
-            product_list.push(json.data[i]);
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].category_id == this.state.category_id || this.state.category_id == '0') {
+            product_list.push(data[i]);
           }
         }
 
         this.props.dispatch({
           type: 'category/fetch',
           data: {
-            product_list: json.data
+            product_list: data
           }
         });
 

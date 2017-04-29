@@ -40,15 +40,15 @@ class ProductDetail extends Component {
       data: {
         product_id: this.props.params.product_id
       },
-      success: function (json) {
-        json.data.product_image_list = JSON.parse(json.data.product_image_list_original);
-        json.data.product_image = JSON.parse(json.data.product_image);
-        json.data.product_price = JSON.parse(json.data.sku_list[0].product_price);
-        json.data.product_stock = json.data.sku_list[0].product_stock;
-        json.data.sku_id = json.data.sku_list[0].sku_id;
+      success: function (data) {
+        data.product_image_list = JSON.parse(data.product_image_list_original);
+        data.product_image = JSON.parse(data.product_image);
+        data.product_price = JSON.parse(data.sku_list[0].product_price);
+        data.product_stock = data.sku_list[0].product_stock;
+        data.sku_id = data.sku_list[0].sku_id;
 
         this.setState({
-          product: json.data
+          product: data
         });
       }.bind(this),
       complete: function () {
@@ -173,7 +173,7 @@ class ProductDetail extends Component {
         <NavBar className={style.header} mode="light" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}
                 rightContent={[<Badge key={1} text={this.state.cart_count} onClick={this.handleGo.bind(this)}><img
-                  className={style.cartIcon} src={require('../assets/svg/cart_white.svg')}
+                  className={style.cartIcon} src={require('../assets/svg/cart.svg')}
                   onClick={this.handleGo.bind(this)}/></Badge>]}
         >商品详情</NavBar>
         <div className={style.page}>
@@ -181,7 +181,7 @@ class ProductDetail extends Component {
             this.state.product.product_image_list.length == 0 ?
               ''
               :
-              <Carousel autoplay={false} infinite={false} style={{height: document.documentElement.clientWidth + 'px'}}>
+              <Carousel autoplay={true} infinite={true} style={{height: document.documentElement.clientWidth + 'px'}}>
                 {
                   this.state.product.product_image_list.map(function (item, index) {
                     return (

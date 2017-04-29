@@ -52,15 +52,15 @@ class Home extends Component {
       data: {
 
       },
-      success: function (json) {
-        for (let i = 0; i < json.data.length; i++) {
-          json.data[i].product_image_original = constant.host + JSON.parse(json.data[i].product_image_original);
+      success: function (data) {
+        for (let i = 0; i < data.length; i++) {
+          data[i].product_image_original = constant.host + JSON.parse(data[i].product_image_original);
         }
 
         this.props.dispatch({
           type: 'home/fetch',
           data: {
-            list: json.data
+            list: data
           }
         });
       }.bind(this),

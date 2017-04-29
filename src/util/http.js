@@ -48,7 +48,7 @@ export default function http(config) {
                     if (json.code == 200) {
                         Toast.hide();
 
-                        config.success(json);
+                        config.success(json.data);
                     } else {
                         Toast.fail(json.message, constant.duration);
                     }

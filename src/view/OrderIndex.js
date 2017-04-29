@@ -34,9 +34,9 @@ class OrderIndex extends Component {
         page_index: 1,
         page_size: 10
       },
-      success: function (json) {
+      success: function (data) {
         this.setState({
-          list: json.data
+          list: data
         });
       }.bind(this),
       complete: function () {

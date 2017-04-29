@@ -34,11 +34,11 @@ class OrderResult extends Component {
       data: {
         order_id: this.props.params.order_id
       },
-      success: function (json) {
-        if (json.data.order_is_pay) {
+      success: function (data) {
+        if (data.order_is_pay) {
           this.setState({
             result: 'success',
-            order: json.data
+            order: data
           });
         } else {
           if (this.state.count < 2) {

@@ -37,10 +37,10 @@ class DeliveryDetail extends Component {
       data: {
         delivery_id: this.props.params.delivery_id
       },
-      success: function (json) {
-        json.data.delivery_province_city_area = [json.data.delivery_province, json.data.delivery_city, json.data.delivery_area];
+      success: function (data) {
+        data.delivery_province_city_area = [data.delivery_province, data.delivery_city, data.delivery_area];
 
-        this.props.form.setFieldsValue(json.data)
+        this.props.form.setFieldsValue(data)
       }.bind(this),
       complete: function () {
 
@@ -69,10 +69,10 @@ class DeliveryDetail extends Component {
           data: {
             delivery_id: this.props.params.delivery_id
           },
-          success: function (json) {
+          success: function (data) {
             Toast.success('删除成功', constant.duration);
 
-            database.setDelivery(json.data);
+            database.setDelivery(data);
 
             setTimeout(function () {
               this.handleBack();
@@ -152,11 +152,11 @@ class DeliveryDetail extends Component {
         http({
           url: '/delivery/' + action,
           data: values,
-          success: function (json) {
+          success: function (data) {
             Toast.success('保存成功', constant.duration);
 
-            if (json.data.delivery_is_default) {
-              database.setDelivery(json.data);
+            if (data.delivery_is_default) {
+              database.setDelivery(data);
             }
 
             setTimeout(function () {

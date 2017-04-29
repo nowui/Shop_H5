@@ -38,9 +38,9 @@ class OrderDetail extends Component {
       data: {
         order_id: this.props.params.order_id
       },
-      success: function (json) {
+      success: function (data) {
         this.setState({
-          order: json.data
+          order: data
         });
       }.bind(this),
       complete: function () {
@@ -66,13 +66,13 @@ class OrderDetail extends Component {
       success: function (json) {
         if (typeof WeixinJSBridge == "undefined") {
           if (document.addEventListener) {
-            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this), false);
+            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data).bind(this), false);
           } else if (document.attachEvent) {
-            document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this));
-            document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this));
+            document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data).bind(this));
+            document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(data).bind(this));
           }
         } else {
-          this.onBridgeReady(json.data).bind(this);
+          this.onBridgeReady(data).bind(this);
         }
       }.bind(this),
       complete: function () {

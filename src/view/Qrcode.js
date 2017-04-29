@@ -31,11 +31,11 @@ class Qrcode extends Component {
     http({
       url: '/member/qrcode/find',
       data: {},
-      success: function (json) {
-        database.setSceneQrcode(json.data);
+      success: function (data) {
+        database.setSceneQrcode(data);
 
         this.setState({
-          qrcode: json.data
+          qrcode: data
         });
       }.bind(this),
       complete: function () {

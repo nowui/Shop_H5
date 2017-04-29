@@ -35,13 +35,13 @@ class Login extends Component {
         http({
           url: '/member/login',
           data: values,
-          success: function (json) {
+          success: function (data) {
             Toast.success('登录成功', constant.duration);
 
-            database.setToken(json.data.token);
-            database.setDelivery(json.data.delivery);
-            database.setUserName(json.data.user_name);
-            database.setUserAvatar(json.data.user_avatar);
+            database.setToken(data.token);
+            database.setDelivery(data.delivery);
+            database.setUserName(data.user_name);
+            database.setUserAvatar(data.user_avatar);
 
             setTimeout(function () {
               this.props.handleLoginSucess();

@@ -21,14 +21,14 @@ const wechat = {
         data: {
           wechat_open_id: wechat_open_id
         },
-        success: function (json) {
+        success: function (data) {
           database.setWeChatOpenId(wechat_open_id);
-          database.setToken(json.data.token);
-          database.setDelivery(json.data.delivery);
-          database.setUserName(json.data.user_name);
-          database.setUserAvatar(json.data.user_avatar);
-          database.setMemberLevel(json.data.member_level);
-          database.setSceneQrcode(json.data.scene_qrcode);
+          database.setToken(data.token);
+          database.setDelivery(data.delivery);
+          database.setUserName(data.user_name);
+          database.setUserAvatar(data.user_avatar);
+          database.setMemberLevel(data.member_level);
+          database.setSceneQrcode(data.scene_qrcode);
         }.bind(this),
         complete: function () {
 

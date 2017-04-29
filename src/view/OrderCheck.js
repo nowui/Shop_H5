@@ -3,7 +3,7 @@ import {connect} from 'dva';
 import {routerRedux} from 'dva/router';
 import {createForm} from 'rc-form';
 
-import {Toast, NavBar, WhiteSpace, List, TextareaItem, Popup} from 'antd-mobile';
+import {Toast, NavBar, WhiteSpace, List, TextareaItem, Popup, Modal} from 'antd-mobile';
 
 import Login from './Login';
 
@@ -13,22 +13,99 @@ import http from '../util/http';
 
 import style from './style.css';
 
+const alert = Modal.alert;
+
 class OrderCheck extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      delivery: {},
-      product: database.getProduct(),
+      is_pay: false,
+      is_delivery: false,
+      delivery: {
+        delivery_name: '',
+        delivery_phone: '',
+        delivery_address: ''
+      },
+      product_list: [],
       productTotal: 0,
       freight: 0,
-      allTotal: 0
+      total: 0
     }
 
   }
 
   componentDidMount() {
     this.handleReset();
+
+    http({
+      url: '/order/check',
+      data: {
+        product_list: []
+      },
+      success: function (data) {
+        let is_pay = true;
+        let is_delivery = false;
+        let product_list = database.getProduct();
+        let freight = 0;
+        let total = 0;
+
+        if (data.delivery_name == '') {
+          is_pay = false;
+
+          alert('提示', '您还没有收货地址，是否新建一个？', [
+            {
+              text: '取消',
+              onPress: function () {
+
+              }
+            },
+            {
+              text: '确定',
+              onPress: function () {
+                this.props.dispatch(routerRedux.push({
+                  pathname: '/delivery/index/order_check_' + this.props.params.type,
+                  query: {}
+                }));
+              }.bind(this)
+            },
+          ]);
+        } else {
+          is_delivery = true;
+        }
+
+        let delivery = {
+          delivery_name: data.delivery_name,
+          delivery_phone: data.delivery_phone,
+          delivery_address: data.delivery_address
+        }
+
+        for (let i = 0; i < product_list.length; i++) {
+          let product = product_list[i];
+
+          let product_total_price = product.product_quantity * product.product_price[0].product_price;
+
+          product.product_total_price = product_total_price.toFixed(2);
+          total += product_total_price;
+        }
+
+        if (!total > 0) {
+          is_pay = false;
+        }
+
+        this.setState({
+          is_pay: is_pay,
+          is_delivery: is_delivery,
+          delivery: delivery,
+          product_list: product_list,
+          freight: new Number(freight).toFixed(2),
+          total: total.toFixed(2)
+        });
+      }.bind(this),
+      complete: function () {
+
+      }.bind(this)
+    }).post();
   }
 
   componentWillUnmount() {
@@ -37,14 +114,14 @@ class OrderCheck extends Component {
 
   handleReset() {
     let productTotal = 0;
-    for (let i = 0; i < this.state.product.length; i++) {
-      productTotal += this.state.product[i].product_price[0].product_price * this.state.product[i].product_quantity;
+    for (let i = 0; i < this.state.product_list.length; i++) {
+      productTotal += this.state.product_list[i].product_price[0].product_price * this.state.product_list[i].product_quantity;
     }
 
     this.setState({
       delivery: database.getDelivery(),
       productTotal: productTotal,
-      allTotal: productTotal + this.state.freight
+      total: productTotal + this.state.freight
     });
   }
 
@@ -86,6 +163,11 @@ class OrderCheck extends Component {
   }
 
   handlePay() {
+    if (!this.state.is_pay) {
+      return;
+    }
+
+
     if (database.getToken() == '') {
       Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {
         animationType: 'slide-up',
@@ -103,10 +185,10 @@ class OrderCheck extends Component {
 
     let product_list = [];
 
-    for (let i = 0; i < this.state.product.length; i++) {
+    for (let i = 0; i < this.state.product_list.length; i++) {
       product_list.push({
-        sku_id: this.state.product[i].sku_id,
-        product_quantity: this.state.product[i].product_quantity
+        sku_id: this.state.product_list[i].sku_id,
+        product_quantity: this.state.product_list[i].product_quantity
       });
     }
 
@@ -126,16 +208,16 @@ class OrderCheck extends Component {
         open_id: database.getWeChatOpenId(),
         pay_type: 'H5'
       },
-      success: function (json) {
+      success: function (data) {
         if (typeof WeixinJSBridge == "undefined") {
           if (document.addEventListener) {
-            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this), false);
+            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(data).bind(this), false);
           } else if (document.attachEvent) {
-            document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this));
-            document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(json.data).bind(this));
+            document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady(data).bind(this));
+            document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady(data).bind(this));
           }
         } else {
-          this.onBridgeReady(json.data).bind(this);
+          this.onBridgeReady(data).bind(this);
         }
       }.bind(this),
       complete: function () {
@@ -198,9 +280,10 @@ class OrderCheck extends Component {
           <WhiteSpace size="lg"/>
           <List>
             {
-              this.state.product.map(function (item) {
+              this.state.product_list.map(function (item) {
                 return (
-                  <Item key={item.product_id} extra={'￥' + (item.product_quantity * item.product_price[0].product_price).toFixed(2)}>
+                  <Item key={item.product_id}
+                        extra={'￥' + (item.product_quantity * item.product_price[0].product_price).toFixed(2)}>
                     <img className={style.productListImage}
                          src={constant.host + item.product_image}/>
                     <div className={style.productListText}>
@@ -217,7 +300,7 @@ class OrderCheck extends Component {
             <Item extra={'￥' + this.state.productTotal.toFixed(2)}>
               商品金额
             </Item>
-            <Item extra={'￥' + this.state.freight.toFixed(2)}>
+            <Item extra={'￥' + this.state.freight}>
               运费
             </Item>
           </List>
@@ -235,9 +318,12 @@ class OrderCheck extends Component {
           </List>
         </div>
         <div className={style.footer}>
-          <div className={style.checkTotal}><span
-            className={style.checkTotalText}>实付总金额: ￥{this.state.allTotal.toFixed(2)}</span></div>
-          <div className={style.checkSubmit} onClick={this.handlePay.bind(this)}>立刻支付</div>
+          <div className={style.checkTotal}>
+            <span className={style.checkTotalText}>实付总金额: ￥{this.state.total}</span>
+          </div>
+          <div className={style.checkSubmit} style={{backgroundColor: this.state.is_pay ? '#1AAD19' : '#dddddd'}}
+               onClick={this.handlePay.bind(this)}>立刻支付
+          </div>
         </div>
       </div>
     );
