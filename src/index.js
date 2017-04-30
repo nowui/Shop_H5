@@ -17,6 +17,8 @@ app.model(require('./model/category'));
 app.model(require('./model/apply'));
 app.model(require('./model/order'));
 app.model(require('./model/delivery'));
+app.model(require('./model/favor'));
+app.model(require('./model/team'));
 
 // 4. Router
 app.router(require('./router'));

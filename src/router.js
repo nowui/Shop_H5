@@ -17,6 +17,7 @@ import OrderResult from './view/OrderResult';
 import DeliveryIndex from './view/DeliveryIndex';
 import DeliveryDetail from './view/DeliveryDetail';
 import FavorIndex from './view/FavorIndex';
+import TeamIndex from './view/TeamIndex';
 import Qrcode from './view/Qrcode';
 
 export default function ({history}) {
@@ -47,7 +48,7 @@ export default function ({history}) {
         </Route>
         <Route path="category/:category_id" component={Category}/>
         <Route path="product/detail/:type/:product_id" component={ProductDetail}/>
-        <Route path='order/index' component={OrderIndex}/>
+        <Route path='order/index/:order_flow' component={OrderIndex}/>
         <Route path='order/detail/:order_id' component={OrderDetail}/>
         <Route path="order/check/:type" component={OrderCheck}/>
         <Route path="order/result/:type/:order_id" component={OrderResult}/>
@@ -55,6 +56,7 @@ export default function ({history}) {
         <Route path="delivery/add/:type" component={DeliveryDetail}/>
         <Route path="delivery/edit/:type/:delivery_id" component={DeliveryDetail}/>
         <Route path="favor/index" component={FavorIndex}/>
+        <Route path="team/index" component={TeamIndex}/>
         <Route path="qrcode" component={Qrcode}/>
       </Route>
     </Router>

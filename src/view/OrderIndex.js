@@ -15,6 +15,7 @@ class OrderIndex extends Component {
 
     this.state = {
       is_load: false,
+      order_flow: '',
       list: []
     }
   }
@@ -32,11 +33,28 @@ class OrderIndex extends Component {
       url: '/order/list',
       data: {
         page_index: 1,
-        page_size: 10
+        page_size: 10,
+        list: []
       },
       success: function (data) {
+        this.props.dispatch({
+          type: 'order/fetch',
+          data: {
+            list: data
+          }
+        });
+
+        let list = [];
+
+        for(let i = 0; i < data.length; i++) {
+          if (data[i].order_flow == this.props.params.order_flow || this.props.params.order_flow == 'ALL') {
+            list.push(data[i]);
+          }
+        }
+
         this.setState({
-          list: data
+          order_flow: this.props.params.order_flow,
+          list: list
         });
       }.bind(this),
       complete: function () {
@@ -61,6 +79,26 @@ class OrderIndex extends Component {
     }));
   }
 
+  handleTab(order_flow) {
+    let list = [];
+
+    for(let i = 0; i < this.props.order.list.length; i++) {
+      if (this.props.order.list[i].order_flow == order_flow || order_flow == 'ALL') {
+        list.push(this.props.order.list[i]);
+      }
+    }
+
+    this.setState({
+      order_flow: order_flow,
+      list: list
+    });
+
+    this.setState({
+      order_flow: order_flow
+    });
+
+  }
+
   render() {
     const Item = List.Item;
     const TabPane = Tabs.TabPane;
@@ -70,16 +108,16 @@ class OrderIndex extends Component {
         <NavBar className={style.header} mode="light" leftContent="返回"
                 onLeftClick={this.handleBack.bind(this)}>我的订单</NavBar>
         <div className={style.page}>
-          <Tabs defaultActiveKey="0" animated={false}>
-            <TabPane tab="全部订单" key="0">
+          <Tabs activeKey={this.state.order_flow} animated={false} onTabClick={this.handleTab.bind(this)}>
+            <TabPane tab="全部订单" key="ALL">
             </TabPane>
-            <TabPane tab="代付款" key="1">
+            <TabPane tab="代付款" key="WAIT_PAY">
             </TabPane>
-            <TabPane tab="代发货" key="2">
+            <TabPane tab="代发货" key="WAIT_SEND">
             </TabPane>
-            <TabPane tab="代收货" key="3">
+            <TabPane tab="代收货" key="WAIT_RECEIVE">
             </TabPane>
-            <TabPane tab="已完成" key="4">
+            <TabPane tab="已完成" key="FINISH">
             </TabPane>
           </Tabs>
           <List>
@@ -87,18 +125,16 @@ class OrderIndex extends Component {
               this.state.list.map(function (item) {
 
                 let order_status = '';
-                if (item.order_status == 'WAIT') {
+                if (item.order_status == 'WAIT_PAY') {
                   order_status = '待付款';
                 } else if (item.order_status == 'EXPIRE') {
                   order_status = '超时未付款';
-                } else if (item.order_status == 'CONFIRM') {
+                } else if (item.order_status == 'WAIT_CONFIRM') {
                   order_status = '已付款，待确认';
-                } else if (item.order_status == 'PAYED') {
-                  order_status = '已付款';
-                } else if (item.order_status == 'SEND') {
-                  order_status = '已发货';
-                } else if (item.order_status == 'RECEIVED') {
-                  order_status = '货已签收';
+                } else if (item.order_status == 'WAIT_SEND') {
+                  order_status = '待发货';
+                } else if (item.order_status == 'WAIT_RECEIVE') {
+                  order_status = '代收货';
                 } else if (item.order_status == 'FINISH') {
                   order_status = '订单完成';
                 } else if (item.order_status == 'CANCEL') {

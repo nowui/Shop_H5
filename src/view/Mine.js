@@ -44,7 +44,7 @@ class Mine extends Component {
     }
   }
 
-  handleOrder() {
+  handleOrder(order_status) {
     if (database.getToken() == '') {
       Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {
         animationType: 'slide-up',
@@ -52,7 +52,7 @@ class Mine extends Component {
       });
     } else {
       this.props.dispatch(routerRedux.push({
-        pathname: '/order/index',
+        pathname: '/order/index/' + order_status,
         query: {}
       }));
     }
@@ -86,6 +86,20 @@ class Mine extends Component {
     }
   }
 
+  handleTeam() {
+    if (database.getToken() == '') {
+      Popup.show(<Login type='PRODUCT' data={''} handleLoginSucess={this.handleLoginSucess.bind(this)}/>, {
+        animationType: 'slide-up',
+        maskClosable: false
+      });
+    } else {
+      this.props.dispatch(routerRedux.push({
+        pathname: '/team/index',
+        query: {}
+      }));
+    }
+  }
+
   handleLogout() {
     database.removeWeChatOpenId();
     database.removeToken();
@@ -113,7 +127,8 @@ class Mine extends Component {
         <div className={style.page}>
           <WhiteSpace size="lg"/>
           <List>
-            <Item onClick={this.handleMine.bind(this)} extra="二维码"
+            <Item onClick={this.handleMine.bind(this)}
+                  extra={database.getMemberLevel().member_level_value < 3 ? '二维码' : ''}
                   arrow={database.getMemberLevel().member_level_value < 3 ? 'horizontal' : ''}>
               {
                 this.state.is_login ?
@@ -140,23 +155,23 @@ class Mine extends Component {
           <WhiteSpace size="lg"/>
           <List>
             <Item extra="查看全部订单" arrow="horizontal"
-                  onClick={this.handleOrder.bind(this)}>
+                  onClick={this.handleOrder.bind(this, "ALL")}>
               我的订单
             </Item>
             <Item>
-              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this, "WAIT_PAY")}>
                 <img src={require('../assets/svg/pay.svg')}/>
                 <div className={style.mineOrderItemText}>待付款</div>
               </div>
-              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this, "WAIT_SEND")}>
                 <img src={require('../assets/svg/send.svg')}/>
                 <div className={style.mineOrderItemText}>待发货</div>
               </div>
-              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this, "WAIT_RECEIVE")}>
                 <img src={require('../assets/svg/deliver.svg')}/>
                 <div className={style.mineOrderItemText}>待收货</div>
               </div>
-              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this)}>
+              <div className={style.mineOrderItem} onClick={this.handleOrder.bind(this, "FINISH")}>
                 <img src={require('../assets/svg/comment.svg')}/>
                 <div className={style.mineOrderItemText}>已完成</div>
               </div>
@@ -173,15 +188,18 @@ class Mine extends Component {
               我的收藏
             </Item>
           </List>
-          {/*{*/}
-          {/*this.state.is_login ?*/}
-          {/*<div style={{margin: '100px 10px 0px 10px'}}>*/}
-          {/*<Button style={{backgroundColor: '#dd514c', color: '#ffffff'}}*/}
-          {/*onClick={this.handleLogout.bind(this)}>退出系统</Button>*/}
-          {/*</div>*/}
-          {/*:*/}
-          {/*''*/}
-          {/*}*/}
+          <WhiteSpace size="lg"/>
+          {
+            database.getMemberLevel().member_level_value < 3 ?
+              <List>
+                <Item thumb={require('../assets/svg/friend.svg')} arrow="horizontal"
+                      onClick={this.handleTeam.bind(this)}>
+                  我的下一级
+                </Item>
+              </List>
+              :
+              ''
+          }
         </div>
       </div>
     );
